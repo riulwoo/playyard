@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-06-28T07:18:17.729Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" etag="W-R-RJo6XWnv2eCfjFlc" version="20.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-06-28T07:19:57.695Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" etag="IzxZFfmtsvxr-a4WFh8R" version="20.0.3" type="github">
   <diagram id="WoUSKYyLAS6QP5xmDLaz" name="Page-1">
     <mxGraphModel dx="866" dy="752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -303,6 +303,21 @@
         </mxCell>
         <mxCell id="1nU0iJgryQsgc_WQuSYV-65" value="사이트 나감" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="660" y="780" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gKPgeCyqO32LE-ZK3pid-1" value="Send Response" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" vertex="1" parent="1">
+          <mxGeometry x="171" y="310" width="106" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gKPgeCyqO32LE-ZK3pid-3" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="gKPgeCyqO32LE-ZK3pid-1" target="gKPgeCyqO32LE-ZK3pid-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="600" as="sourcePoint" />
+            <mxPoint x="320" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="140" y="325" />
+              <mxPoint x="140" y="600" />
+              <mxPoint x="320" y="600" />
+              <mxPoint x="320" y="325" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
