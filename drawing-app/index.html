@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Drawing App</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel='stylesheet' href='style.css'>
+        <link href="..\index\menu.css" rel="stylesheet">
+        <script src='script.js' defer></script>
+        <style>
+            .btn2.active {
+            transform: translateX(-180px);
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas id = "canvas" width="800" height="600"></canvas>
+        <div class="toolbox">
+            <button id="decrease" class = "btn3">-</button>
+            <span id="size" class = "btn3">30</span>
+            <button id="increase" class = "btn3">+</button>
+            <input type="color" id="color"/>
+            <button id="clear" class = "btn3" >💩</button>
+        </div>
+        <Button id="btn" class = "btn2">☰</Button>
+          <nav id="nav">
+            <ul>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\Quiz\Quiz.html">Quiz</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\TODO\todo.html">TODO</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\carousel\index.html">carousel</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\drawing-app\index.html">drawing-app</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\zoom-effect\index.html">zoom-effect</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\countdown-timer\index.html">Countdown-timer</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\github-profile\index.html">github-profile</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\popup\index.html">popup</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\poop-rain\index.html">snow!</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif;" href="..\background-changer\index.html">party!</a></li>
+                <li><a style="font-size: 1rem; font-family: Poppins, sans-serif; position: fixed; bottom: 15px;" href="..\index\index.html">home</a></li>  
+              </ul>
+          </nav>
+    </body>
+    <script src="..\index\menu.js"></script>
+</html>
