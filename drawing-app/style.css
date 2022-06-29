@@ -84,8 +84,21 @@ canvas
     border: 2px solid #303942;
     border-radius: 15px;
     background-color: #303942;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+.room > div {
+    width: 80%;
+    height: 30px;
+    border: 1px solid #fff;
+    background-color: aliceblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
 .chatbox {
     width: 300px;
     height: 703px;
@@ -101,4 +114,8 @@ canvas
     background-color: #fff;
     border: 1px solid #fff;
     margin: 10px;
+}
+
+.chatbox > input {
+    size: 100px;
 }
