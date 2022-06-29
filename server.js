@@ -6,6 +6,6 @@ const io = require('socket.io')(server);
 const fs = require('fs');
 
 
-server.listen(process.env.PORT || 3000, ()=> {
+server.listen(process.env.PORT || 8080, ()=> {
   console.log("서버가 대기중입니다.");
 })
