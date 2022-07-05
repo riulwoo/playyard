@@ -159,13 +159,14 @@ h2 {
     border-radius: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
+    text-align: right;
   }
    
   /* 상대방이 보낸 메시지 */
   .other {
     width: 90%;
     margin: auto;
-    background-color: white;
+    background-color: skyblue;
     border-radius: 5px;
     margin-top: 10px;
   }

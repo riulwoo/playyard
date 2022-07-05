@@ -1,5 +1,8 @@
 const socket = io();
 
+const $element = document.querySelector("#chat")
+
+
 socket.on('update', function(data){
     var chat = document.getElementById('chat')
     var message = document.createElement('div')
@@ -22,12 +25,11 @@ socket.on('update', function(data){
     message.classList.add(className)
     message.appendChild(node)
     chat.prepend(message)
-    msg.focus();
 })
 
 function send(){
     // 입력되어있는 데이터 가져오기
-    var message = document.getElementById('text').value
+    var message = '나 : ' + document.getElementById('text').value
 
     // 가져왔으니 데이터 빈칸으로 변경
     document.getElementById('text').value = ''
@@ -39,8 +41,19 @@ function send(){
     msg.classList.add('me')
     msg.appendChild(node)
     chat.prepend(msg)
-    msg.focus();
 
     // 서버로 message 이벤트 전달 + 데이터
     socket.emit('message', {type: 'message', message: message})
 }
+
+const scrollfix = () => {
+    setInterval(() => {
+        const eh = $element.clientHeight + $element.scrollTop;
+        const isScroll = $element.scrollHeight <= eh;
+        
+        if(isScroll){
+            $element.scrollTop = $element.scrollHeight;
+        }
+    }, 800);
+}
+scrollfix()
