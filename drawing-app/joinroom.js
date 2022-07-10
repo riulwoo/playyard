@@ -13,6 +13,10 @@ function joinroom(room){
         room : room
     })
 
+socket.on('roomcnt', (roomcnt)=> {
+    usercnt = roomcnt;
+})
+
 roomnum.innerText = `( ${usercnt} / 2명 접속중 )`;
 
     ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
