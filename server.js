@@ -33,9 +33,12 @@ app.get('/', function(req, res){
 })
 
 /* 전역변수 선언 */
-let userinfo = [];
+let userinfo = {};
 for(let i = 0; i < 22; i++) {
-  userinfo.push({id : null, room : null, name : null});
+  userinfo[i] = {
+    id : null;
+    room : null;
+  }
 }
 
 
