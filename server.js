@@ -83,14 +83,18 @@ io.on('connection', (socket)=>{
           socket.join(info.room);
           userinfo[i].room = info.room;
           roomcnt++;
-          io.emit('roomcnt',roomcnt);
+          io.emit('roomcnt', function() {
+            console.log("값보냄");
+          });
           break;
         } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
           socket.join(info.room);
           userinfo[i].id = info.id;
           userinfo[i].room = info.room;
           roomcnt++;
-          io.emit('roomcnt',roomcnt);
+          io.emit('roomcnt',function() {
+            console.log("값보냄");
+          });
           break;
         }
       }
