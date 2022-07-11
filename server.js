@@ -66,41 +66,40 @@ io.on('connection', (socket)=>{
   socket.emit('userid', socket.id)
 
   //방입장 메시지
-  socket.on('joinroom',(info)=>{
+  socket.on('joinroom',(info)=> {
     let roomcnt = 0; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
 
-    //방 인원이 꽉찼는지 확인
-    for(let i = 0; i< userinfo.length; i++) {
-      if(userinfo[i].room == info.room){
-        roomcnt++;
-      }
-    }
-    if(roomcnt < 2){
       //서버 데이터 객체에 유저 정보와 방 번호 저장
       for(let i = 0; i < userinfo.length; i++) { 
-        if(userinfo[i].id == info.id) { //방을 옮길 경우
-          socket.leave(userinfo[i].room);
-          socket.join(info.room);
-          userinfo[i].room = info.room;
+
+        //방 인원이 꽉찼는지 확인
+        if(userinfo[i].room == info.room)
           roomcnt++;
-          io.emit('roomcnt', function() {
+        if(roomcnt < 2){
+          if(userinfo[i].id == info.id) { //방을 옮길 경우
+            socket.leave(userinfo[i].room);
+            socket.join(info.room);
+            userinfo[i].room = info.room;
+            roomcnt++;
+            console.log("방옮김");
+            io.emit('roomcnt', function() {
             console.log("값보냄");
-          });
-          break;
-        } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
-          socket.join(info.room);
-          userinfo[i].id = info.id;
-          userinfo[i].room = info.room;
-          roomcnt++;
-          io.emit('roomcnt',function() {
-            console.log("값보냄");
-          });
-          break;
-        }
+            });
+            break;
+          } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
+              socket.join(info.room);
+              userinfo[i].id = info.id;
+              userinfo[i].room = info.room;
+              roomcnt++;
+              console.log("방입장함");
+              io.emit('roomcnt',function() {
+                console.log("값보냄");
+              });
+            break;
+          }
+        }  
       }
-    }
-    
-  })
+    })
 
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message)=> {
