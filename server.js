@@ -48,7 +48,7 @@ io.on('connection', (socket)=>{
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
-    for(let i = 0; i < userinfo.length; i++){
+    for(let i = 0; i < 22; i++){
       if(userinfo[i].id == socket.id) {
         userinfo[i].id == null;
         userinfo[i].room == null;
