@@ -33,15 +33,28 @@ app.get('/', function(req, res){
 })
 
 /* 전역변수 선언 */
-let userinfo = [];
+let userinfo = {};
 for(let i = 0; i < 22; i++) {
-  userinfo.push({id : null, room : null, name : null});
+  userinfo[i] = {
+    id : null,
+    room : null
+  }
 }
 
 
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
+
+  socket.join('r1');
+
+  let rooms = io.sockets.manager.rooms;
+
+  console.log(rooms);
+
+  let roomkey = io.sockets.manager.roomClients[socket.id];
+
+  console.log(roomkey);
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
