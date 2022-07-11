@@ -48,9 +48,6 @@ io.on('connection', (socket)=>{
 
   socket.join('r1');
 
-  let rooms = io.sockets.manager.rooms;
-
-  console.log(rooms);
 
   let roomkey = io.sockets.manager.roomClients[socket.id];
 
