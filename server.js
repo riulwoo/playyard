@@ -68,7 +68,8 @@ io.on('connection', (socket)=>{
   //방입장 메시지
   socket.on('joinroom',(info)=> {
     let roomcnt = 0; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
-
+      
+    console.log(roomcnt);
       //서버 데이터 객체에 유저 정보와 방 번호 저장
       for(let i = 0; i < userinfo.length; i++) { 
 
