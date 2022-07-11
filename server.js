@@ -47,14 +47,8 @@ io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   socket.join("r1");
-  console.log(socket.rooms);
+  console.log(Object.keys(io.sockets.adapter.sids[socket.id]));
 
-  let a = {};
-  socket.rooms = a;
-  if(socket.id == a.id)
-      console.log("됩니다");
-      else
-      console.log("안됩니다");
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
