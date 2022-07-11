@@ -46,11 +46,15 @@ for(let i = 0; i < 22; i++) {
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
-  let rooms = io.sockets.manager.rooms; 
+  socket.join('r1');
 
-  socket.join("r1");
-  console.log(rooms[key].length);
+  let rooms = io.sockets.manager.rooms;
 
+  console.log(rooms);
+
+  let roomkey = io.sockets.manager.roomClients[socket.id];
+
+  console.log(roomkey);
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
