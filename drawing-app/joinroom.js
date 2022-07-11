@@ -9,6 +9,9 @@ socket.on('userid', (data)=> {
     myId = data;
 })
 
+socket.on('init', (data)=>{
+    roomnum = getElementById()
+})
 function joinroom(room, btn){
     beforebtn = currentbtn;
     currentbtn = document.getElementById(btn);
@@ -35,8 +38,10 @@ function joinroom(room, btn){
 }
 
 socket.on('roomcnt', (roomcnt)=> {
-    privroomnum.innerText = `( ${usercnt-1} / 2명 접속중 )`;
     usercnt = roomcnt;
     roomnum.innerText = `( ${usercnt} / 2명 접속중 )`;
+    privroomnum.innerText = `( ${usercnt-1} / 2명 접속중 )`;
 })
 
+socket.on('userdisconnect', (roomcnt)=> {})
+socket.on('userdisconnect', (roomcnt)=> {})
