@@ -36,8 +36,8 @@ app.get('/', function(req, res){
 let userinfo = {};
 for(let i = 0; i < 22; i++) {
   userinfo[i] = {
-    id : null;
-    room : null;
+    id : null,
+    room : null
   }
 }
 
