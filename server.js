@@ -43,12 +43,17 @@ for(let i = 0; i < 22; i++) {
   }
 }
 
+let rooms = {};
+for(let i = 0; i < 11; i++) {
+  rooms[i] = {
+    rname : 0,
+    cnt : 0
+  }
+}
 
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
-
-  console.log(userinfo[0].id + " , " + userinfo[0].room);
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
@@ -60,15 +65,19 @@ io.on('connection', (socket)=>{
         break;
       }
     }
+
+    io.broadcast
+
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
   socket.emit('userid', socket.id)
 
+  socket.emit('init', rooms)
   //방입장 메시지
   socket.on('joinroom',(info)=> {
-    let roomcnt = 0; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
-      
+      let roomcnt = []; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
+    
       //서버 데이터 객체에 유저 정보와 방 번호 저장
       for(let i = 0; i < Object.keys(userinfo).length; i++) { 
 
@@ -81,14 +90,23 @@ io.on('connection', (socket)=>{
             socket.join(info.room);
             userinfo[i].room = info.room;
             roomcnt++;
-            io.emit('roomcnt', roomcnt);
+            
+            io.emit('roomcnt', {
+              roomcnt : roomcnt,
+              room : info.room,
+              privroom : info.privroom
+            });
             break;
           } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
               socket.join(info.room);
               userinfo[i].id = info.id;
               userinfo[i].room = info.room;
               roomcnt++;
-              io.emit('roomcnt', roomcnt);
+              io.emit('roomcnt', {
+                roomcnt : roomcnt,
+                room : info.room,
+                privroom : info.privroom
+              });
             break;
           }
         }  
