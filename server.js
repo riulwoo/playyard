@@ -46,8 +46,10 @@ for(let i = 0; i < 22; i++) {
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
+  let rooms = io.sockets.manager.rooms; 
+
   socket.join("r1");
-  console.log(Object.keys(io.sockets.adapter.sids[socket.id]));
+  console.log(rooms[key].length);
 
 
   //사이트 접속 해제
