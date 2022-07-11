@@ -72,11 +72,11 @@ io.on('connection', (socket)=>{
       //서버 데이터 객체에 유저 정보와 방 번호 저장
       for(let i = 0; i < userinfo.length; i++) { 
 
+        console.log(roomcnt + " 1번");
         //방 인원이 꽉찼는지 확인
         if(userinfo[i].room == info.room)
           roomcnt++;
-          console.log(roomcnt + " 1번");
-        if(roomcnt < 2){
+        if(roomcnt < 2) {
           console.log(roomcnt + " 2번");
           if(userinfo[i].id == info.id) { //방을 옮길 경우
             socket.leave(userinfo[i].room);
