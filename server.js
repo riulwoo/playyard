@@ -8,6 +8,8 @@ const socket = require('socket.io')
 const http = require('http')
 /* Node.js 기본 내장 모듈 불러오기 */
 const fs = require('fs')
+const { SocketAddress } = require('net')
+const { Socket } = require('dgram')
 /* express 객체 생성 */
 const app = express()
 /* express http 서버 생성 */
@@ -48,8 +50,8 @@ io.on('connection', (socket)=>{
 
   socket.join('r1');
 
-
-  let roomkey = io.sockets.manager.roomClients[socket.id];
+  if(socket.id == sockets.rooms.clinetid)
+    console.log("됩니다.");
 
   console.log(roomkey);
 
