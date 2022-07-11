@@ -52,7 +52,7 @@ io.on('connection', (socket)=>{
 
 
 
-  console.log(socket.rooms);
+  console.log(sids.get(key));
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
