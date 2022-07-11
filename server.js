@@ -49,7 +49,9 @@ io.on('connection', (socket)=>{
   socket.join("r1");
   console.log(socket.rooms);
 
-  if(socket.id == socket.rooms.id)
+  let a = {};
+  socket.rooms = a;
+  if(socket.id == a.id)
       console.log("됩니다");
       else
       console.log("안됩니다");
