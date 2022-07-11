@@ -3,18 +3,17 @@ let usercnt = 0;
 let beforebtn = null;
 let currentbtn = null;
 let roomnum = null;
+let privroomnum = null;
 
 socket.on('userid', (data)=> {
     myId = data;
 })
 
-
-
 function joinroom(room, btn){
     beforebtn = currentbtn;
     currentbtn = document.getElementById(btn);
-    roomnum = document.getElementById(room)
-
+    privroomnum = roomnum;
+    roomnum = document.getElementById(room);
 
     if(beforebtn != null)
     {
@@ -23,21 +22,20 @@ function joinroom(room, btn){
     }
     else
         currentbtn.style.display = 'none';
+
+
+        ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
         
     socket.emit('joinroom', 
     {
         id : myId,
-        room : room
+        room : room,
+        privroom : privroomnum
     })
-
 }
 
 socket.on('roomcnt', (roomcnt)=> {
     usercnt = roomcnt;
-
     roomnum.innerText = `( ${usercnt} / 2명 접속중 )`;
-
-    ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
-
 })
 
