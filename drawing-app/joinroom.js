@@ -37,5 +37,6 @@ function joinroom(room, btn){
 socket.on('roomcnt', (roomcnt)=> {
     usercnt = roomcnt;
     roomnum.innerText = `( ${usercnt} / 2명 접속중 )`;
+    privroomnum.innerText = `( ${usercnt-1} / 2명 접속중 )`;
 })
 
