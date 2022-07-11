@@ -50,10 +50,9 @@ io.on('connection', (socket)=>{
 
   socket.join('r1');
 
-  if(socket.id == sockets.rooms.clinetid)
-    console.log("됩니다.");
 
-  console.log(roomkey);
+
+  console.log(io.socket.rooms);
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
