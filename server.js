@@ -46,9 +46,13 @@ for(let i = 0; i < 22; i++) {
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
+  socket.join("r1");
+  console.log(socket.rooms);
+
+
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
-    for(let i = 0; i < 22; i++){
+    for(let i = 0; i < userinfo.length; i++){
       if(userinfo[i].id == socket.id) {
         userinfo[i].id == null;
         userinfo[i].room == null;
