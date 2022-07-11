@@ -48,7 +48,7 @@ for(let i = 0; i < 22; i++) {
 io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
-  console.log(userinfo[1]);
+  console.log(userinfo[1].id + " , " + userinfo[1].room);
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{
