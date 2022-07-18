@@ -45,10 +45,7 @@ for(let i = 0; i < 22; i++) {
 
 let rooms = {};
 for(let i = 0; i < 11; i++) {
-  rooms[i] = {
-    rname : 0,
-    cnt : 0
-  }
+  rooms[i] = 0;
 }
 
 /* 사이트 접속 시 실행 메소드 */
@@ -66,7 +63,6 @@ io.on('connection', (socket)=>{
       }
     }
 
-    io.broadcast
 
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
