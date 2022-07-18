@@ -34,7 +34,7 @@ app.get('/', function(req, res){
   })
 })
 
-/* 전역변수 선언 */
+/* 유저 접속 정보 저장 변수 선언 */
 let userinfo = {};
 for(let i = 0; i < 22; i++) {
   userinfo[i] = {
@@ -43,7 +43,8 @@ for(let i = 0; i < 22; i++) {
   }
 }
 
-let rooms = {};
+/* 유저 접속 현황 체크 변수 */
+let rooms = [];
 for(let i = 0; i < 11; i++) {
   rooms[i] = 0;
 }
