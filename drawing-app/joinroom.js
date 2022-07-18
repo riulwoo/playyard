@@ -10,7 +10,10 @@ socket.on('userid', (data)=> {
 })
 
 socket.on('init', (data)=>{
-    roomnum = getElementById()
+    room = document.querySelectorAll('#r');
+    num = room.length;
+    for(i=0; i < num; i++)
+    console.log(room[i]);
 })
 function joinroom(room, btn){
     beforebtn = currentbtn;
