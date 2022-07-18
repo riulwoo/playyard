@@ -11,7 +11,8 @@ socket.on('userid', (data)=> {
 
 socket.on('init', (data)=>{
     room = document.querySelectorAll('#r');
-    for(i=0; i < room.length; i++)
+    num = room.length;
+    for(i=0; i < num; i++)
     console.log(room[i]);
 })
 function joinroom(room, btn){
