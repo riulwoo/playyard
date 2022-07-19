@@ -34,7 +34,7 @@ app.get('/', function(req, res){
   })
 })
 
-/* 전역변수 선언 */
+/* 유저 접속 정보 저장 변수 선언 */
 let userinfo = {};
 for(let i = 0; i < 22; i++) {
   userinfo[i] = {
@@ -43,12 +43,10 @@ for(let i = 0; i < 22; i++) {
   }
 }
 
-let rooms = {};
+/* 유저 접속 현황 체크 변수 */
+let rooms = [];
 for(let i = 0; i < 11; i++) {
-  rooms[i] = {
-    rname : 0,
-    cnt : 0
-  }
+  rooms[i] = 0;
 }
 
 /* 사이트 접속 시 실행 메소드 */
@@ -66,7 +64,6 @@ io.on('connection', (socket)=>{
       }
     }
 
-    io.broadcast
 
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
