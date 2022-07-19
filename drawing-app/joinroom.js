@@ -12,6 +12,7 @@ socket.on('userid', (data)=> {
 socket.on('init', (data)=>{
     roomnum = getElementById()
 })
+
 function joinroom(room, btn){
     beforebtn = currentbtn;
     currentbtn = document.getElementById(btn);
@@ -25,8 +26,6 @@ function joinroom(room, btn){
     }
     else
         currentbtn.style.display = 'none';
-
-
         ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
         
     socket.emit('joinroom', 
