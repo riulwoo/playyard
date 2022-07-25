@@ -15,7 +15,9 @@ socket.on('init', (data)=>{
     room = document.querySelectorAll('#r');
     num = room.length;
     for(i=0; i < num; i++)
-    console.log(room[i]);
+    {
+        room[i].value = `( ${data[i]} / 2 접속중 )`;
+    }
 })
 
 // 방 입장 버튼 클릭시 방 입장
@@ -45,10 +47,9 @@ function joinroom(iroom, croom, btn){
 
 // 이전의 방 인원 수와 입장한 방 인원 수 변경
 socket.on('roomcnt', (data)=> {
-    const {roomcnt, room, privroom} = data;
-    usercnt = roomcnt;
+    const {roomcnt, privroomcnt, room, privroom} = data;
     roomnum = document.getElementsByName(room);
     privroomnum = document.getElementsByName(privroom);
-    roomnum.innerText = `( ${usercnt} / 2명 접속중 )`;
-    privroomnum.innerText = `( ${usercnt-1} / 2명 접속중 )`;
+    roomnum.innerText = `( ${roomcnt} / 2명 접속중 )`;
+    privroomnum.innerText = `( ${privroomcnt} / 2명 접속중 )`;
 })
