@@ -39,7 +39,8 @@ let userinfo = {};
 for(let i = 0; i < 22; i++) {
   userinfo[i] = {
     id : null,
-    room : null
+    room : null,
+    name : null
   }
 }
 
@@ -112,7 +113,10 @@ io.on('connection', (socket)=>{
 
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message)=> {
-    
+    for (let i =  0; i < Object.keys(userinfo).length; i++) {
+      if(userinfo[i].id == id)
+        io.sockets.to(userinfo[i].room).emit('update', message);
+    }
   })
 
 
