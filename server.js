@@ -102,7 +102,7 @@ io.on('connection', (socket)=>{
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message)=> {
     for (let i =  0; i < Object.keys(roominfo).length; i++) {
-      if(roominfo[i].id == id)
+      if(roominfo[i].id == socket.id)
         io.sockets.to(roominfo[i].room).emit('update', message);
     }
   })
