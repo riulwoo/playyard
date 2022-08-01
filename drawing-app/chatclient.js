@@ -6,7 +6,7 @@ const $element = document.querySelector("#chat")
 socket.on('update', function(data){
     var chat = document.getElementById('chat')
     var message = document.createElement('div')
-    var node = document.createTextNode(`${data.name}: ${data.message}`)
+    var node = document.createTextNode(`상대 : ${data.message}`)
     var className = ''
 
     // 타입에 따라 적용할 클래스를 다르게 지정
@@ -29,8 +29,8 @@ socket.on('update', function(data){
 
 function send(){
     // 입력되어있는 데이터 가져오기
+    var sendmessage = document.getElementById('text').value
     var message = '나 : ' + document.getElementById('text').value
-
     // 가져왔으니 데이터 빈칸으로 변경
     document.getElementById('text').value = ''
 
@@ -43,7 +43,7 @@ function send(){
     chat.prepend(msg)
 
     // 서버로 message 이벤트 전달 + 데이터
-    socket.emit('message', {type: 'message', message: message})
+    socket.emit('message', {type: 'message', message: sendmessage})
 }
 
 const scrollfix = () => {

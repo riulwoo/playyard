@@ -15,41 +15,27 @@ socket.on('init', (data)=>{
     room = document.querySelectorAll('#r');
     num = room.length;
     for(i=0; i < num; i++)
-    {
+    {(
         room[i].value = `( ${data[i]} / 2 접속중 )`;
     }
 })
 
 // 방 입장 버튼 클릭시 방 입장
-function joinroom(iroom, croom, btn){
-    beforebtn = currentbtn;
-    currentbtn = document.getElementById(btn);
+function joinroom(cIndex ,room){
     privroomnum = roomnum;
-    roomnum = document.getElementsByName(croom);
+    roomnum = cIndex;
 
-    if(beforebtn != null)
-    {
-        beforebtn.style.display = 'block';
-        currentbtn.style.display = 'none';
-    }
-    else
-        currentbtn.style.display = 'none';
-        ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
+    ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
         
     socket.emit('joinroom', 
     {
         id : myId,
-        room : croom,
-        privroom : privroomnum,
-        index : iroom
+        cIndex : roomnum,
+        pIndex : privroomnum,
+        room : room
     })
 }
 
-// 이전의 방 인원 수와 입장한 방 인원 수 변경
-socket.on('roomcnt', (data)=> {
-    const {roomcnt, privroomcnt, room, privroom} = data;
-    roomnum = document.getElementsByName(room);
-    privroomnum = document.getElementsByName(privroom);
-    roomnum.innerText = `( ${roomcnt} / 2명 접속중 )`;
-    privroomnum.innerText = `( ${privroomcnt} / 2명 접속중 )`;
+socket.on('joinfail',()=>{
+    alert('빈 자리가 없습니다!!');
 })
