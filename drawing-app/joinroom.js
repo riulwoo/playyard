@@ -15,7 +15,7 @@ socket.on('init', (data)=>{
     room = document.querySelectorAll('#r');
     num = room.length;
     for(i=0; i < num; i++)
-    {(
+    {
         room[i].value = `( ${data[i]} / 2 접속중 )`;
     }
 })
