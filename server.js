@@ -35,7 +35,7 @@ app.get('/', function(req, res){
 })
 
 /* 유저 접속 정보 저장 변수 선언 */
-let roominfo = {};
+let roominfo = [];
 for(let i = 0; i < 11; i++) {
   roominfo[i] = {
     room : null,
