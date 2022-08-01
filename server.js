@@ -74,14 +74,14 @@ io.on('connection', (socket)=>{
   socket.emit('init', rooms)
   //방입장 메시지
   socket.on('joinroom',(info)=> {
-      let roomcnt = []; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
-    
-      //서버 데이터 객체에 유저 정보와 방 번호 저장
-      for(let i = 0; i < Object.keys(userinfo).length; i++) { 
+      let roomcnt = 0; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
+      const {id, cIndex, pIndex, room} = info;
 
-        //방 인원이 꽉찼는지 확인
-        if(userinfo[i].room == info.room)
+      for(let i = 0; i < Object.keys(userinfo).length; i++) {
+        if(userinfo[i].room == room)
           roomcnt++;
+      }
+      //서버 데이터 객체에 유저 정보와 방 번호 저장
         if(roomcnt < 2) {
           if(userinfo[i].id == info.id) { //방을 옮길 경우
             socket.leave(userinfo[i].room);
@@ -89,22 +89,14 @@ io.on('connection', (socket)=>{
             userinfo[i].room = info.room;
             roomcnt++;
             
-            io.emit('roomcnt', {
-              roomcnt : roomcnt,
-              room : info.room,
-              privroom : info.privroom
-            });
+
             break;
           } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
               socket.join(info.room);
               userinfo[i].id = info.id;
               userinfo[i].room = info.room;
               roomcnt++;
-              io.emit('roomcnt', {
-                roomcnt : roomcnt,
-                room : info.room,
-                privroom : info.privroom
-              });
+            
             break;
           }
         }  
