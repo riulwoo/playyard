@@ -55,12 +55,15 @@ io.on('connection', (socket)=>{
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{ // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    roominfo.forEach(element => {
-      Object.values(roominfo.id) == socket.id ? null;
-
-    });
-    
-
+    const id = roominfo.filter(info, infoindex=>{
+      const idarray = Object.values(info.id);
+      const result = idarray.filter((id,index)=>{
+          if(id == socket.id)
+           return {infoindex : infoindex, index : index};
+      })
+      return result;
+  })
+  roominfo[id[0]].id[id[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
