@@ -35,7 +35,7 @@ app.get('/', function(req, res){
 })
 
 /* 유저 접속 정보 저장 변수 선언 */
-let roominfo = {};
+let roominfo = [];
 for(let i = 0; i < 11; i++) {
   roominfo[i] = {
     room : null,
@@ -55,7 +55,7 @@ io.on('connection', (socket)=>{
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{ // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    const id = roominfo.filter(info, infoindex=>{
+    const id = roominfo.filter((info, infoindex)=>{
       const idarray = Object.values(info.id);
       const result = idarray.filter((id,index)=>{
           if(id == socket.id)
@@ -103,7 +103,7 @@ io.on('connection', (socket)=>{
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message)=> {
     for (let i =  0; i < Object.keys(roominfo).length; i++) {
-      if(roominfo[i].id == id)
+      if(roominfo[i].id == socket.id)
         io.sockets.to(roominfo[i].room).emit('update', message);
     }
   })
