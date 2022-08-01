@@ -35,19 +35,18 @@ app.get('/', function(req, res){
 })
 
 /* 유저 접속 정보 저장 변수 선언 */
-let userinfo = {};
-for(let i = 0; i < 22; i++) {
-  userinfo[i] = {
-    id : null,
+let roominfo = {};
+for(let i = 0; i < 11; i++) {
+  roominfo[i] = {
     room : null,
-    name : null
+    id : { one : null, two : null }
   }
 }
 
 /* 유저 접속 현황 체크 변수 */
 let rooms = [];
 for(let i = 0; i < 11; i++) {
-  rooms[i] = 0;
+  rooms[i] =  0;
 }
 
 /* 사이트 접속 시 실행 메소드 */
@@ -55,16 +54,12 @@ io.on('connection', (socket)=>{
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   //사이트 접속 해제
-  socket.on('disconnect', (reason)=>{
-    for(let i = 0; i < userinfo.length; i++){
-      if(userinfo[i].id == socket.id) {
-        userinfo[i].id == null;
-        userinfo[i].room == null;
-        userinfo[i].name == null;
-        break;
-      }
-    }
+  socket.on('disconnect', (reason)=>{ // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
+    roominfo.forEach(element => {
+      Object.values(roominfo.id) == socket.id ? null;
 
+    });
+    
 
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
@@ -76,27 +71,25 @@ io.on('connection', (socket)=>{
   socket.on('joinroom',(info)=> {
       let roomcnt = 0; //접속한 방 번호에 유저가 꽉 차있는지 체크하는 변수
       const {id, cIndex, pIndex, room} = info;
-
-      for(let i = 0; i < Object.keys(userinfo).length; i++) {
-        if(userinfo[i].room == room)
+      //해당 방에 인원 확인
+      for(let i = 0; i < Object.keys(roominfo).length; i++) {
+        if(roominfo[i].room == room)
           roomcnt++;
       }
       //서버 데이터 객체에 유저 정보와 방 번호 저장
+      for(let i = 0; i < Object.keys(roominfo).length; i++) {
         if(roomcnt < 2) {
-          if(userinfo[i].id == info.id) { //방을 옮길 경우
-            socket.leave(userinfo[i].room);
-            socket.join(info.room);
-            userinfo[i].room = info.room;
+          if(roominfo[i].id == id) { //방을 옮길 경우
+            socket.leave(roominfo[i].room);
+            socket.join(room);
+            roominfo[i].room = room;
             roomcnt++;
-            
-
             break;
-          } else if(userinfo[i].id == null || userinfo[i].room == null) { //처음 방에 입장할 경우
-              socket.join(info.room);
-              userinfo[i].id = info.id;
-              userinfo[i].room = info.room;
+          } else if(roominfo[i].id == null && roominfo[i].room == null) { //처음 방에 입장할 경우
+              socket.join(room);
+              roominfo[i].id = id;
+              roominfo[i].room = room;
               roomcnt++;
-            
             break;
           }
         }  
@@ -105,9 +98,9 @@ io.on('connection', (socket)=>{
 
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message)=> {
-    for (let i =  0; i < Object.keys(userinfo).length; i++) {
-      if(userinfo[i].id == id)
-        io.sockets.to(userinfo[i].room).emit('update', message);
+    for (let i =  0; i < Object.keys(roominfo).length; i++) {
+      if(roominfo[i].id == id)
+        io.sockets.to(roominfo[i].room).emit('update', message);
     }
   })
 
