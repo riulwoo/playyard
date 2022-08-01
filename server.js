@@ -55,7 +55,7 @@ io.on('connection', (socket)=>{
 
   //사이트 접속 해제
   socket.on('disconnect', (reason)=>{ // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    const id = roominfo.filter(info, infoindex=>{
+    const id = roominfo.filter((info, infoindex)=>{
       const idarray = Object.values(info.id);
       const result = idarray.filter((id,index)=>{
           if(id == socket.id)
