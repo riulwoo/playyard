@@ -93,8 +93,9 @@ io.on('connection', (socket) => {
         console.log(rooms);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
-        roominfo[cIndex].id[idIndex] = socket.id;
+        roominfo[cIndex].id[idIndex] = id;
         rooms[cIndex] = rooms[cIndex] + 1;
+        console.log(roominfo[cIndex]);
         console.log(rooms);
         socket.emit('init', rooms);
         console.log('방처음입장');
