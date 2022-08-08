@@ -88,12 +88,14 @@ io.on('connection', (socket) => {
       try {
         roominfo[index[0]].id[index[1]] = null;
         socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
-        rooms[pIndex]--;
+        rooms[pIndex] = rooms[pIndex] - 1;
         console.log('방옮김');
+        console.log(rooms);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
         roominfo[cIndex].id[idIndex] = socket.id;
-        rooms[cIndex]++;
+        rooms[cIndex] = rooms[cIndex] + 1;
+        console.log(rooms);
         socket.emit('init', rooms);
         console.log('방처음입장');
       }
