@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
       const idarray = Object.values(info.id);
       const result = idarray.filter((id, index) => {
         if (id == socket.id)
-          return { infoindex: infoindex, index: index };
+          return [infoindex, index];
       })
       return result;
     })
