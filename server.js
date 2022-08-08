@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
   //방입장 메시지
   socket.on('joinroom', (info) => {
     const { id, cIndex, pIndex } = info;
-    const full = roominfo[cIndex].id.filter((user, index) => { if (user == null) return index; }) //1. 해당 방 인원 확인
+    const full = (roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }) //1. 해당 방 인원 확인
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
