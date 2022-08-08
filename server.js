@@ -76,7 +76,10 @@ io.on('connection', (socket) => {
   //방입장 메시지
   socket.on('joinroom', (info) => {
     const { id, cIndex, pIndex } = info;
-    const full = Object.values(roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }) //1. 해당 방 인원 확인
+    const full = Object.values(roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 확인
+    const roomIndex = roominfo.indexOf(null, (e) => {
+      return e.id;
+    });
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
@@ -87,6 +90,7 @@ io.on('connection', (socket) => {
         console.log('방옮김');
       } catch { } finally {
         socket.join(roominfo[cIndex].room);
+        roominfo[cIndex].id[roomIndex] = socket.id;
         rooms[cIndex]++;
         socket.emit('init', rooms);
         console.log('방처음입장');
