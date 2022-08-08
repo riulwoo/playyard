@@ -57,4 +57,4 @@ const scrollfix = () => {
         }
     }, 800);
 }
-window.onload(scrollfix);
+scrollfix();
