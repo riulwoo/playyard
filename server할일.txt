@@ -17,7 +17,6 @@
 
 4. 방 옮길시
 
-
 joinroom 받으면 room찾아서 cnt증감
 
 message 완성

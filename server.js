@@ -62,9 +62,9 @@ io.on('connection', (socket)=>{
            return {infoindex : infoindex, index : index};
       })
       return result;
-  })
-  console.log(roominfo[id[0]]);
-  roominfo[id[0]].id[id[1]] = null;
+    })
+    console.log(roominfo[id[0]]);
+    roominfo[id[0]].id[id[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
