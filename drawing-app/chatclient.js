@@ -24,7 +24,7 @@ socket.on('update', function(data){
 
     message.classList.add(className)
     message.appendChild(node)
-    chat.prepend(message)
+    chat.prepend(message).stop().animate({scroollTop: chat.scrollHeight}, 1000)
 })
 
 function send(){

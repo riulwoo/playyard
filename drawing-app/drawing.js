@@ -39,22 +39,37 @@ canvas.addEventListener('mousemove', (e) => {
         drawline(x,y, x2, y2);
         x= x2;
         y= y2;
+        socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size})
     }
 });
 
-function drawCircle(x,y) {
+// 현재 속한 방의 캔버스에 x,y,x2,y2 전달
+// 속한 방의 캔버스에서 x,y,x2,y2 받아 drawCircle과 drawline 실행
+
+socket.on('onDraw', (data)=>{
+  const {_x,_y,_x2,_y2,_size} = data;
+  let you_size = _size;
+  drawCircle(_x2, _y2, you_size);
+  drawline(_x,_y,_x2,_y2,you_size);
+  _x = _x2;
+  _y = _y2;
+})
+
+function drawCircle(x,y,you_size) {
+  if(you_size == undefined) you_size = size;
     ctx.beginPath();
-    ctx.arc(x,y,size, 0 , Math.PI * 2);
+    ctx.arc(x,y,you_size, 0 , Math.PI * 2);
     ctx.fillStyle = color;
     ctx.fill();
 }
 
-function drawline(x1, y1, x2, y2){
+function drawline(x1, y1, x2, y2, you_size){
+  if(you_size == undefined) you_size = size;
     ctx.beginPath();
     ctx.moveTo(x1,y1);
     ctx.lineTo(x2,y2);
     ctx.strokeStyle = color;
-    ctx.lineWidth = size * 2;
+    ctx.lineWidth = you_size * 2;
     ctx.stroke();
 }
 
@@ -87,9 +102,10 @@ function updateSizeOnScreen(){
 
 clearEl.addEventListener('click', () => {
     ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
-    socket.emit('clear');
+    socket.emit('emitClear');
 })
 
+socket.on('onClear', ()=>ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight))
 // function draw(){
 //     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 //     drawCircle(x,y);

@@ -21,7 +21,7 @@ socket.on('init', (data)=>{
 })
 
 // 방 입장 버튼 클릭시 방 입장
-function joinroom(cIndex ,room){
+function joinroom(cIndex){
     privroomnum = roomnum;
     roomnum = cIndex;
 
@@ -32,7 +32,6 @@ function joinroom(cIndex ,room){
         id : myId,
         cIndex : roomnum,
         pIndex : privroomnum,
-        room : room
     })
 }
 
