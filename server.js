@@ -53,8 +53,7 @@ for (let i = 0; i < 11; i++) {
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
-  //사이트 접속 해제
-  socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
+  function info() {
     const id = roominfo.filter((info, infoindex) => {
       const idarray = Object.values(info.id);
       const result = idarray.filter((id, index) => {
@@ -63,6 +62,12 @@ io.on('connection', (socket) => {
       })
       return result;
     })
+    return id;
+  }
+
+  //사이트 접속 해제
+  socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
+    const id = info();
     console.log(id);
     roominfo[id[0]].id[id[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
@@ -75,23 +80,21 @@ io.on('connection', (socket) => {
   //방입장 메시지
   socket.on('joinroom', (info) => {
     const { id, cIndex, pIndex } = info;
-    
-    //1. 해당 방 인원 확인
-    
-    //1-1. 꽉찼다면 실패 메시지
-    //1-2. 덜찼다면 덜찬 인덱스 확인
-    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-    //2-1.방을 옮길 경우
-    //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제
-    //    2. 유저가 들어갈 방에 아이디 삽입
-    //    3. room배열의 인덱스 값 수정
-    //    4. init 메시지로 room배열 전송
-    //처음 방에 입장할 경우
-    //    1. 유저가 들어갈 방에 아이디 삽입
-    //    2. room 배열의 인덱스 값 수정
-    //    3. init 메시지로 room배열 전송
+    const full = roominfo[cIndex].id.filter((user, index) => { if (user == null) return index; }) //1. 해당 방 인원 확인
+    if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
+    else { //1-2. 덜찼다면 덜찬 인덱스 확인
+      try {
+        const user = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
+        roominfo[user[0]].id[user[1]] = null;
+        socket.leave(roominfo[id[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
+        rooms[pIndex]--;
+      } catch { } finally {
+        socket.join(roominfo[cIndex].room);
+        rooms[cIndex]++;
+        socket.emit('init', rooms);
+      }
+    }
   })
-
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message) => {
     for (let i = 0; i < Object.keys(roominfo).length; i++) {
