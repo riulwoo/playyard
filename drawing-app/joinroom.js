@@ -12,12 +12,13 @@ socket.on('userid', (data)=> {
 
 // 클라이언트 처음 접속 시 서버의 현재 인원 초기화
 socket.on('init', (data)=>{
-    console.log(data)
     room = document.querySelectorAll('#r');
     num = room.length;
+    console.log(data)
+    console.log(room);
     for(i=0; i < num; i++)
     {
-        room[i].value = `( ${data[i]} / 2 접속중 )`;
+        room[i].innerText = `( ${data[i]} / 2 접속중 )`;
     }
 
 })
