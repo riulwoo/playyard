@@ -69,7 +69,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
     const id = info();
     console.log(id);
-    roominfo[id[0]].id[id[1]] = null;
+    if (id == undefined)
+      roominfo[id[0]].id[id[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
