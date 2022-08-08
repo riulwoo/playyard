@@ -12,13 +12,14 @@ socket.on('userid', (data)=> {
 
 // 클라이언트 처음 접속 시 서버의 현재 인원 초기화
 socket.on('init', (data)=>{
-  console.log('초기화 완료 데스')
+    console.log(data)
     room = document.querySelectorAll('#r');
     num = room.length;
     for(i=0; i < num; i++)
     {
         room[i].value = `( ${data[i]} / 2 접속중 )`;
     }
+
 })
 
 // 방 입장 버튼 클릭시 방 입장

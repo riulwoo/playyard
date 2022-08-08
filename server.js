@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        roominfo[index[0]][index[1]] = null;
+        roominfo[index[0]].id[index[1]] = null;
         socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
         rooms[pIndex] = rooms[pIndex] - 1;
         console.log('방옮김');
