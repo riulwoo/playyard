@@ -53,16 +53,11 @@ for (let i = 0; i < 11; i++) {
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
-  function info() {
-    const id = roominfo.filter((info, infoindex) => {
-      const idarray = Object.values(info.id);
-      const result = idarray.filter((id, index) => {
-        if (id == socket.id)
-          return [infoindex, index];
-      })
-      return result;
-    })
-    return id;
+  function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
+    const roomIndex = roominfo.indexOf(socket.id, (e, i) => {
+      return e.id;
+    });
+    console.log(roomIndex);
   }
 
   //사이트 접속 해제

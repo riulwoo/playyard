@@ -1,9 +1,15 @@
-const id = roominfo.filter(info, infoindex=>{
-    const idarray = Object.values(info.id);
+let arr;
+for(let i = 0 ; i < roominfo.length. i++){
+    const idarray = Object.values(roominfo[i].id);
     const result = idarray.filter((id,index)=>{
         if(id == socket.id)
-         return {infoindex : infoindex, index : index};
+        {
+         arr[0] = infoindex;
+         arr[1] = index;
+          break;
+        }
     })
-    return result;
-})
+    
+}
 roominfo[id[0]].id[id[1]] = null;
+
