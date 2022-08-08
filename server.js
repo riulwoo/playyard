@@ -54,10 +54,13 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.indexOf(socket.id, (e, i) => {
+    const roomIndex = roominfo.findIndex(i => i.id == socket.id);
+    const idIndex = roominfo.indexOf(socket.id, (e, i) => {
       return e.id;
     });
     console.log(roomIndex);
+    console.log(idIndex);
+    return [roomIndex, idIndex];
   }
 
   //사이트 접속 해제
@@ -77,7 +80,7 @@ io.on('connection', (socket) => {
   socket.on('joinroom', (info) => {
     const { id, cIndex, pIndex } = info;
     const full = Object.values(roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 확인
-    const roomIndex = roominfo.indexOf(null, (e) => {
+    const idIndex = roominfo.indexOf(null, (e) => {
       return e.id;
     });
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
@@ -90,7 +93,7 @@ io.on('connection', (socket) => {
         console.log('방옮김');
       } catch { } finally {
         socket.join(roominfo[cIndex].room);
-        roominfo[cIndex].id[roomIndex] = socket.id;
+        roominfo[cIndex].id[idIndex] = socket.id;
         rooms[cIndex]++;
         socket.emit('init', rooms);
         console.log('방처음입장');
