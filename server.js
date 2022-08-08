@@ -66,7 +66,7 @@ io.on('connection', (socket) => {
   //사이트 접속 해제
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
     const index = info();
-    if (id !== undefined)
+    if (index[1] !== -1)
       roominfo[index[0]].id[index[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
         socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
         rooms[pIndex]--;
         console.log('방옮김');
-      } catch { } finally {
+      } catch(e) {console.log(e)} finally {
         socket.join(roominfo[cIndex].room);
         roominfo[cIndex].id[idIndex] = socket.id;
         rooms[cIndex]++;
