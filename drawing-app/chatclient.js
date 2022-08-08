@@ -1,6 +1,6 @@
 const socket = io();
 
-const $element = document.querySelector("#chat")
+const $el = document.querySelector("#chat")
 
 
 socket.on('update', function(data){
@@ -24,7 +24,7 @@ socket.on('update', function(data){
 
     message.classList.add(className)
     message.appendChild(node)
-    chat.prepend(message).stop().animate({scroollTop: chat.scrollHeight}, 1000)
+    chat.prepend(message)
 })
 
 function send(){
@@ -48,12 +48,13 @@ function send(){
 
 const scrollfix = () => {
     setInterval(() => {
-        const eh = $element.clientHeight + $element.scrollTop;
-        const isScroll = $element.scrollHeight <= eh;
+        const eh = $el.clientHeight + $el.scrollTop;
+        const isScroll = $el.scrollHeight <= eh;
         
+        // 스크롤이 최하단 일때만 고정
         if(isScroll){
-            $element.scrollTop = $element.scrollHeight;
+            $el.scrollTop = $el.scrollHeight;
         }
     }, 800);
 }
-scrollfix()
+window.onload(scrollfix);
