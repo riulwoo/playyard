@@ -171,3 +171,7 @@ h2 {
     margin-top: 10px;
   }
   
+  #b {
+    background-color: dimgray;
+    color : #fff;
+  }
