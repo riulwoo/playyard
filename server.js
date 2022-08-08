@@ -84,10 +84,12 @@ io.on('connection', (socket) => {
         roominfo[user[0]].id[user[1]] = null;
         socket.leave(roominfo[id[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
         rooms[pIndex]--;
+        console.log('방옮김');
       } catch { } finally {
         socket.join(roominfo[cIndex].room);
         rooms[cIndex]++;
         socket.emit('init', rooms);
+        console.log('방처음입장');
       }
     }
   })
