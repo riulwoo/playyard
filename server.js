@@ -76,16 +76,16 @@ io.on('connection', (socket) => {
   socket.emit('init', rooms)
 
   //방입장 메시지
-  socket.on('joinroom', (info) => {
-    const { id, cIndex, pIndex } = info;
+  socket.on('joinroom', (data) => {
+    const { id, cIndex, pIndex } = data;
     const full = Object.values(roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 확인
     const idIndex = roominfo.indexOf(null, (e) => {
       return e.id;
     });
-    const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
+        const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         roominfo[index[0]].id[index[1]] = null;
         socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
         rooms[pIndex] = rooms[pIndex] - 1;
