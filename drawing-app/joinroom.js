@@ -17,7 +17,7 @@ socket.on('init', (data)=>{
     num = room.length;
     for(i=0; i < num; i++)
     {
-        room[i].value = `( ${data[i]} / 2 접속중 )`;
+        room[i].innerText = `( ${data[i]} / 2 접속중 )`;
     }
 
 })
