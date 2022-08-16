@@ -57,6 +57,10 @@ io.on('connection', (socket) => {
     const roomIndex = roominfo.filter((e, i) => {
       if (e.id.includes(socket.id))
         return i;
+      else {
+        return -1;
+        break;
+      }
     });
     console.log(`roomIndex : ${roomIndex}`);
     const idIndex = roominfo[roomIndex].id.findIndex(e => e == socket.id);
