@@ -59,14 +59,15 @@ io.on('connection', (socket) => {
       return e.id;
     });
     console.log(idIndex);
-    return idIndex;
+    console.log(roomIndex);
+    return [roomIndex, idIndex];
   }
 
   //사이트 접속 해제
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    const index = info();
-    if (index[1] !== -1)
-      roominfo[index[0]].id[index[1]] = null;
+    const Index = info();
+    if (Index[1] !== -1)
+      roominfo[Index[0]].id[Index[1]] = null;
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
@@ -82,9 +83,9 @@ io.on('connection', (socket) => {
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
-        const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        if (index[1] == -1) {
-          roominfo[Index[0]].id[index[1]] = null;
+        const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
+        if (Index[1] == -1) {
+          roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] = rooms[Index[0]] - 1;
         }
