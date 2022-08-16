@@ -37,10 +37,7 @@ app.get('/', function(req, res) {
 /* 유저 접속 정보 저장 변수 선언 */
 let roominfo = [];
 for (let i = 0; i < 11; i++) {
-  roominfo[i] = {
-    room: `Room ${i}`,
-    id: [null, null]
-  }
+  roominfo[i] = [null, null];
 }
 
 /* 유저 접속 현황 체크 변수 */
@@ -54,26 +51,14 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.filter((e, i) => {
-      if (e.id.includes(socket.id))
-        return i;
-    });
-    console.log(`roomIndex : ${roomIndex}`);
-    const idIndex = roominfo.filter((e) => {
-      const i = e.id.findIndex(i => i == socket.id);
-      return i;
-    })
-    console.log(`idIndex : ${idIndex}`);
+    const roomIndex = roominfo.findIndex(e => e == socket.id);
+    const idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
     return [roomIndex, idIndex];
   }
 
   //사이트 접속 해제
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    const Index = info();
-    if (Index[1] !== -1) {
-      roominfo[Index[0]].id[Index[1]] = null;
-      socket.leave(roominfo[Index[0]].room);
-    }
+
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
