@@ -93,6 +93,8 @@ io.on('connection', (socket) => {
         console.log(rooms);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
+        console.log(cIndex);
+        console.log(idIndex);
         roominfo[cIndex].id[idIndex] = id;  // 
         rooms[cIndex] = rooms[cIndex] + 1;
         console.log(roominfo[cIndex]);
