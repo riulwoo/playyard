@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
   //사이트 접속 해제
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
     const Index = info();
-    if (Index[1] !== '') {
+    if (Index[1] !== -1) {
       roominfo[Index[0]].id[Index[1]] = null;
       socket.leave(roominfo[Index[0]].room);
     }
@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        if (Index[1] !== '') {
+        if (Index[1] !== -1) {
           roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] = rooms[Index[0]] - 1;
