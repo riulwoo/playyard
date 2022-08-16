@@ -38,7 +38,7 @@ app.get('/', function(req, res) {
 let roominfo = [];
 for (let i = 0; i < 11; i++) {
   roominfo[i] = {
-    room: null,
+    room: `Room ${i}`,
     id: [null, null]
   }
 }
@@ -54,13 +54,12 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.findIndex(i => i.id == socket.id);
+    //    const roomIndex = roominfo.findIndex(i => i.id == socket.id);
     const idIndex = roominfo.indexOf(socket.id, (e, i) => {
       return e.id;
     });
-    console.log(roomIndex);
     console.log(idIndex);
-    return [roomIndex, idIndex];
+    return idIndex;
   }
 
   //사이트 접속 해제
@@ -84,9 +83,11 @@ io.on('connection', (socket) => {
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        roominfo[index[0]].id[index[1]] = null;
-        socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
-        rooms[pIndex] = rooms[pIndex] - 1;
+        if (index == -1) {
+          roominfo[pIndex].id[index] = null;
+          socket.leave(roominfo[pIndex].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
+          rooms[pIndex] = rooms[pIndex] - 1;
+        }
         console.log('방옮김');
         console.log(rooms);
       } catch (e) { console.log(e) } finally {
