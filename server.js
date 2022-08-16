@@ -54,8 +54,8 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.findIndex(i => i.id == socket.id);
-    const idIndex = roominfo.indexOf(socket.id, (e) => {
+    const roomIndex = roominfo.findIndex(i => i.id.findIndex(e => e == socket.id));
+    const idIndex = roominfo[roomIndex].id.indexOf(socket.id, (e) => {
       return e.id;
     });
     console.log(idIndex);
