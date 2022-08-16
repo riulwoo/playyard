@@ -58,8 +58,8 @@ io.on('connection', (socket) => {
     const idIndex = roominfo[roomIndex].id.indexOf(socket.id, (e) => {
       return e.id;
     });
-    console.log(idIndex);
-    console.log(roomIndex);
+    console.log(`roomIndex : ${roomIndex}`);
+    console.log(`idIndex : ${idIndex}`);
     return [roomIndex, idIndex];
   }
 
