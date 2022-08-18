@@ -65,7 +65,9 @@ io.on('connection', (socket) => {
     let idIndex;
     let roomIndex = roominfo.findIndex((room, i) => {
       const { one, two } = room.id;
+      console.log(`one : ${one} / two : ${two}`);
       if (one == socket.id || two == socket.id) {
+        console.log(`들어왔음`);
         //idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
         //console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
         // idIndex = -1;
