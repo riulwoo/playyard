@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
     //   idIndex = -1;
     // }
     let idIndex;
-    const roomIndex = roominfo.findIndex((room, i) => {
+    let roomIndex = roominfo.findIndex((room, i) => {
       const { one, two } = room.id;
       if (one == socket.id || two == socket.id) {
         //idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
