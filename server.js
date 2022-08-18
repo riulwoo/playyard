@@ -70,7 +70,6 @@ io.on('connection', (socket) => {
         console.log(`들어왔음`);
         //idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
         //console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
-        // idIndex = -1;
         return room;
       } //else idIndex = -1;
     })
@@ -95,7 +94,7 @@ io.on('connection', (socket) => {
     const { id, cIndex } = data;
     const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 수 확인
     //const idIndex = roominfo[cIndex].findIndex(e => e == null); //해당 방의 빈 자리 가져오기
-    const idIndex = roominfo.findIndex(e => {
+    const idIndex = roominfo.id.findIndex(e => {
       const { one, two } = e.id;
       if (one == null || two == null) return e;
     });
