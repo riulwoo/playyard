@@ -48,13 +48,13 @@ io.on('connection', (socket) => {
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
     const roomIndex = roominfo.findIndex(e => e == socket.id);
-
+    const test = rooms.findIndex(e => e == 1);
     try {
       let idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
     } catch {
       idIndex = -1;
     }
-    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
+    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex} / 테스트용 : ${test}`);
     return [roomIndex, idIndex];
   }
 
