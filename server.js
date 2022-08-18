@@ -80,18 +80,19 @@ io.on('connection', (socket) => {
         if (Index[1] !== -1) {
           roominfo[Index[0]][Index[1]] = null;
           socket.leave(roomCode); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
-          rooms[Index[0]] = rooms[Index[0]] - 1;
+          rooms[Index[0]] -= 1;
+          console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
         }
         console.log('방옮김');
         console.log(`rooms`);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
-        console.log(`cIndex`);
-        console.log(`idIndex`);
+        console.log(`들어갈 방 Index : ${cIndex}`);
+        console.log(`해당 방의 빈 자리 : ${idIndex}`);
         roominfo[cIndex][idIndex] = id;  // 
         rooms[cIndex] = rooms[cIndex] + 1;
-        console.log(`roominfo[cIndex]`);
-        console.log(`rooms`);
+        console.log(`해당 방의 현황 : ${roominfo[cIndex]}`);
+        console.log(`전체 인원 배열 : ${rooms}`);
         socket.emit('init', rooms);
         console.log('방처음입장');
       }
