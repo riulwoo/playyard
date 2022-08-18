@@ -52,14 +52,18 @@ io.on('connection', (socket) => {
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
     const roomIndex = roominfo.findIndex(e => e == socket.id);
-    const idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
+    try {
+      const idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
+    } catch {
+      idIndex = -1;
+    }
     return [roomIndex, idIndex];
   }
 
   //사이트 접속 해제
   socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
     const Index = info();
-    
+
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
@@ -82,15 +86,15 @@ io.on('connection', (socket) => {
           rooms[Index[0]] = rooms[Index[0]] - 1;
         }
         console.log('방옮김');
-        console.log(rooms);
+        console.log(`rooms`);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
-        console.log(cIndex);
-        console.log(idIndex);
+        console.log(`cIndex`);
+        console.log(`idIndex`);
         roominfo[cIndex][idIndex] = id;  // 
         rooms[cIndex] = rooms[cIndex] + 1;
-        console.log(roominfo[cIndex]);
-        console.log(rooms);
+        console.log(`roominfo[cIndex]`);
+        console.log(`rooms`);
         io.emit('init', rooms);
         console.log('방처음입장');
       }
