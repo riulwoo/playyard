@@ -39,22 +39,37 @@ let rooms = []; //방 입장 인원 체크 배열
 let roomCode = []; //방의 입장 코드 배열
 for (let i = 0; i < 11; i++) {
   rooms[i] = 0;
-  roominfo[i] = [null, null];
-  roomCode[i] = [`room_${i}`];
+  //roominfo[i] = [null, null];
+  roominfo[i] = {
+    roomCode: `room_${i}`,
+    id: {
+      one: null,
+      two: null
+    }
+  }
+  //roomCode[i] = [`room_${i}`];
 }
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.findIndex(e => e == socket.id);
-    const test = roomCode.findIndex(e => e == 'room_7');
-    try {
-      let idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
-    } catch {
-      idIndex = -1;
-    }
-    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex} / 테스트용 : ${test}`);
+    // const roomIndex = roominfo.findIndex(id => {
+    //   if (id[0] == socket.id || id[1] == socket.id) return id;
+    // });
+    // try {
+    //   let idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
+    // } catch {
+    //   idIndex = -1;
+    // }
+    const idIndex, roomIndex = roominfo.findIndex((room, i) => {
+      const { one, two } = room.id;
+      if (one == socket.id || two == socket.id) {
+        idIndex = roominfo[i].findIndex((id) => id == socket.id);
+        return room;
+      }
+    })
+    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
     return [roomIndex, idIndex];
   }
 
