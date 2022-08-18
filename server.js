@@ -41,7 +41,7 @@ for (let i = 0; i < 11; i++) {
   rooms[i] = 0;
   //roominfo[i] = [null, null];
   roominfo[i] = {
-    roomCode: `room_${i}`,
+    room: `room_${i}`,
     id: {
       one: null,
       two: null
@@ -90,24 +90,30 @@ io.on('connection', (socket) => {
     const { id, cIndex } = data;
     const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 수 확인
     //const idIndex = roominfo[cIndex].findIndex(e => e == null); //해당 방의 빈 자리 가져오기
+    const idIndex = roominfo[cIndex].findIndex(e => {
+      const { one, two } = room.id;
+      if (one == null || two == null) return e;
+    });
     const test = info();
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         if (Index[1] !== -1) {
-          roominfo[Index[0]][Index[1]] = null;
-          socket.leave(roomCode); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
+          roominfo[Index[0]].id[Index[1]] = null;
+          socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] -= 1;
           console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
+          console.log('방옮김');
         }
-        console.log('방옮김');
-      } catch (e) { console.log(e) } finally {
+      } catch (e) {
+        console.log(e);
+        rooms[cIndex] += 1;
+      } finally {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
         console.log(`해당 방의 빈 자리 : ${idIndex}`);
-        roominfo[cIndex][idIndex] = id;  // 
-        rooms[cIndex] = rooms[cIndex] + 1;
+        roominfo[cIndex].id[idIndex] = id;
         console.log(`해당 방의 현황 : ${roominfo[cIndex]}`);
         console.log(`전체 인원 배열 : ${rooms}`);
         socket.emit('init', rooms);
@@ -117,10 +123,9 @@ io.on('connection', (socket) => {
   })
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message) => {
-    for (let i = 0; i < Object.keys(roominfo).length; i++) {
-      if (roominfo[i].id == socket.id)
-        io.sockets.to(roominfo[i].room).emit('update', message);
-    }
+    const index = info();
+    if (Index[1] !== -1)
+      io.sockets.to(roominfo[Index[0]].room).emit('update', message);
   })
 
 
