@@ -94,7 +94,6 @@ io.on('connection', (socket) => {
       const { one, two } = e.id;
       if (one == null || two == null) return e;
     });
-    const test = info();
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
