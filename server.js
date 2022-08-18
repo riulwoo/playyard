@@ -66,10 +66,10 @@ io.on('connection', (socket) => {
     const roomIndex = roominfo.findIndex((room, i) => {
       const { one, two } = room.id;
       if (one == socket.id || two == socket.id) {
-        idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
-        console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
+        //idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
+        //console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
         return room;
-      } else idIndex = -1;
+      } //else idIndex = -1;
     })
     console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
     return [roomIndex, idIndex];
