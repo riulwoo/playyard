@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
         return room;
       } //else idIndex = -1;
     })
-    console.log(`roominfo : ${Object.Values(roominfo.id)}`);
+    console.log(`roominfo : ${Object.Value(roominfo.id)}`);
     console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
     return [roomIndex, idIndex];
   }
