@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
     const roomIndex = roominfo.findIndex(e => e == socket.id);
-    const test = rooms.findIndex(e => e == 1);
+    const test = rooms.findIndex(e => e == `room_7`);
     try {
       let idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
     } catch {
