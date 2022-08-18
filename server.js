@@ -54,6 +54,7 @@ io.on('connection', (socket) => {
     } catch {
       idIndex = -1;
     }
+    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
     return [roomIndex, idIndex];
   }
 
@@ -84,7 +85,6 @@ io.on('connection', (socket) => {
           console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
         }
         console.log('방옮김');
-        console.log(`rooms`);
       } catch (e) { console.log(e) } finally {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
