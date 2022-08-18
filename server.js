@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
     const { id, cIndex } = data;
     const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 수 확인
     //const idIndex = roominfo[cIndex].findIndex(e => e == null); //해당 방의 빈 자리 가져오기
-    const idIndex = roominfo.id.findIndex(e => {
+    const idIndex = roominfo[cIndex].id.findIndex(e => {
       const { one, two } = e.id;
       if (one == null || two == null) return e;
     });
