@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         console.log(`유저의 방 배열2 : ${Index[0]}  /  유저의 자리 배열2 : ${Index[1]}`);
         if (Index[1] !== -1) {
-          roominfo[Index[0]].id[Index[1]] = null;
+          //roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] -= 1;
           console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
         console.log(`해당 방의 빈 자리 : ${idIndex}`);
-        roominfo[cIndex].id[idIndex] = id;
+        //roominfo[cIndex].id[idIndex] = id;
         console.log(`해당 방의 현황 : ${roominfo[cIndex]}`);
         console.log(`전체 인원 배열 : ${rooms}`);
         socket.emit('init', rooms);
