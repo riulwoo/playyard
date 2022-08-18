@@ -34,26 +34,23 @@ app.get('/', function(req, res) {
   })
 })
 
-/* 유저 접속 정보 저장 변수 선언 */
-let roominfo = [];
-for (let i = 0; i < 11; i++) {
-  roominfo[i] = [null, null];
-}
-
-/* 유저 접속 현황 체크 변수 */
-let rooms = [];
+let roominfo = []; // 유저 정보 저장 배열
+let rooms = []; //방 입장 인원 체크 배열
+let roomCode = []; //방의 입장 코드 배열
 for (let i = 0; i < 11; i++) {
   rooms[i] = 0;
+  roominfo[i] = [null, null];
+  roomCode[i] = [`room_${i}`];
 }
-
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
     const roomIndex = roominfo.findIndex(e => e == socket.id);
+    const idIndex;
     try {
-      const idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
+      idIndex = roominfo[roomIndex].findIndex(e => e == socket.id);
     } catch {
       idIndex = -1;
     }
@@ -67,22 +64,22 @@ io.on('connection', (socket) => {
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
 
-  socket.emit('userid', socket.id)
+  socket.emit('userid', socket.id);
 
-  socket.emit('init', rooms)
+  socket.emit('init', rooms);
 
   //방입장 메시지
   socket.on('joinroom', (data) => {
     const { id, cIndex } = data;
-    const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 확인
-    const idIndex = roominfo[cIndex].findIndex(e => e == null);
+    const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 수 확인
+    const idIndex = roominfo[cIndex].findIndex(e => e == null); //해당 방의 빈 자리 가져오기
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         if (Index[1] !== -1) {
           roominfo[Index[0]][Index[1]] = null;
-          socket.leave(room코드); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
+          socket.leave(roomCode); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] = rooms[Index[0]] - 1;
         }
         console.log('방옮김');
@@ -95,7 +92,7 @@ io.on('connection', (socket) => {
         rooms[cIndex] = rooms[cIndex] + 1;
         console.log(`roominfo[cIndex]`);
         console.log(`rooms`);
-        io.emit('init', rooms);
+        socket.emit('init', rooms);
         console.log('방처음입장');
       }
     }
