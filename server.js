@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
         console.log(`해당 방의 빈 자리 : ${idIndex}`);
-        //roominfo[cIndex].id[idIndex] = id;
+        roominfo[cIndex].id[idIndex] = id;
         console.log(`해당 방의 현황 : ${roominfo[cIndex]}`);
         console.log(`전체 인원 배열 : ${rooms}`);
         socket.emit('init', rooms);
