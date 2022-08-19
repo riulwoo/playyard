@@ -125,19 +125,19 @@ io.on('connection', (socket) => {
 
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message) => {
-    const index = info();
+    const Index = info();
     if (Index[1] !== -1) sockets.to(roominfo[Index[0]].room).emit('update', message);
   })
 
   //그림판 메시지 받아서 해당 방에 전송
   socket.on('emitDraw', (data) => {
-    const = index = info();
+    const Index = info();
     if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 
   //그림판 삭제 메시지
   socket.on('emitClear', () => {
-    const = index = info();
+    const Index = info();
     if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 })
