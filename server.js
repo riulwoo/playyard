@@ -111,7 +111,6 @@ io.on('connection', (socket) => {
       } finally {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
-        console.log(`해당 방의 빈 자리 : ${idIndex}`);
         if (one === null) roominfo[cIndex].id.one = id;
         else roominfo[cIndex].id.two = id;
         rooms[cIndex] += 1;
