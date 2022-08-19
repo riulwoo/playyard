@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
       console.log(`one : ${one} / two : ${two}`);
       if (one == socket.id || two == socket.id) {
         console.log(`들어왔음`);
-        //idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
+        idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
         //console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
         return room;
       } //else idIndex = -1;
@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
       } finally {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
-        if (one === null) roominfo[cIndex].id.one = id;
+        if (one == null) roominfo[cIndex].id.one = id;
         else roominfo[cIndex].id.two = id;
         rooms[cIndex] += 1;
         console.log(`해당 방의 현황 : ${roominfo[cIndex].id}`);
