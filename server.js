@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
       } else idCheck = -1;
     })
     //console.log(`roominfo : ${Object.Value(roominfo)}`);
-    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
+    console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idCheck}`);
     return [roomIndex, idCheck];
   }
 
