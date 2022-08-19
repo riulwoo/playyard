@@ -62,20 +62,19 @@ io.on('connection', (socket) => {
     // } catch {
     //   idIndex = -1;
     // }
-    let idIndex;
+    let idCheck;
     let roomIndex = roominfo.findIndex((room, i) => {
       const { one, two } = room.id;
       console.log(`one : ${one} / two : ${two}`);
       if (one == socket.id || two == socket.id) {
         console.log(`들어왔음`);
-        idIndex = roominfo.id.findIndex((id) => id.one == socket.id || id.two == socket.id);
-        //console.log(`유저의 방 배열1 : ${roomIndex}  /  유저의 자리 배열1 : ${idIndex}`);
+        idCheck = true;
         return room;
-      } //else idIndex = -1;
+      } else idCheck = -1;
     })
     //console.log(`roominfo : ${Object.Value(roominfo)}`);
     console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idIndex}`);
-    return [roomIndex, idIndex];
+    return [roomIndex, idCheck];
   }
 
   //사이트 접속 해제
@@ -99,7 +98,7 @@ io.on('connection', (socket) => {
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         console.log(`유저의 방 배열2 : ${Index[0]}  /  유저의 자리 배열2 : ${Index[1]}  /  null아이디 인덱스 : ${idIndex}`);
-        if (Index[1] !== -1) {
+        if (Index[1]) {
           //roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           rooms[Index[0]] -= 1;
@@ -125,18 +124,18 @@ io.on('connection', (socket) => {
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message) => {
     const Index = info();
-    if (Index[1] !== -1) sockets.to(roominfo[Index[0]].room).emit('update', message);
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('update', message);
   })
 
   //그림판 메시지 받아서 해당 방에 전송
   socket.on('emitDraw', (data) => {
     const Index = info();
-    if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 
   //그림판 삭제 메시지
   socket.on('emitClear', () => {
     const Index = info();
-    if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 })
