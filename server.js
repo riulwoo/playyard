@@ -93,11 +93,7 @@ io.on('connection', (socket) => {
   socket.on('joinroom', (data) => {
     const { id, cIndex } = data;
     const full = Object.values(roominfo[cIndex]).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 수 확인
-    //const idIndex = roominfo[cIndex].findIndex(e => e == null); //해당 방의 빈 자리 가져오기
-    const idIndex = roominfo[cIndex].id.findIndex(e => {
-      const { one, two } = e.id;
-      if (one == null || two == null) return e;
-    });
+    const { one } = roominfo[cIndex];
     if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
@@ -116,7 +112,8 @@ io.on('connection', (socket) => {
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
         console.log(`해당 방의 빈 자리 : ${idIndex}`);
-        Object.values(roominfo[cIndex].id)[idIndex] = id;
+        if (one === null) roominfo[cIndex].id.one = id;
+        else roominfo[cIndex].id.two = id;
         rooms[cIndex] += 1;
         console.log(`해당 방의 현황 : ${roominfo[cIndex].id}`);
         console.log(`전체 인원 배열 : ${rooms}`);
@@ -125,12 +122,22 @@ io.on('connection', (socket) => {
       }
     }
   })
+
   //채팅 메시지 받아서 해당 방에 전송
   socket.on('message', (message) => {
     const index = info();
-    if (Index[1] !== -1)
-      io.sockets.to(roominfo[Index[0]].room).emit('update', message);
+    if (Index[1] !== -1) sockets.to(roominfo[Index[0]].room).emit('update', message);
   })
 
+  //그림판 메시지 받아서 해당 방에 전송
+  socket.on('emitDraw', (data) => {
+    const = index = info();
+    if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+  })
 
+  //그림판 삭제 메시지
+  socket.on('emitClear', () => {
+    const = index = info();
+    if (Index[1] !== -1) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+  })
 })
