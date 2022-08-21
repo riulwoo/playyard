@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
   
   socket.emit('userid', socket.id);
-  socket.emit('init', rooms);
+  io.emit('init', rooms);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
     console.log('---------------info내부----------------');
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
       else roominfo[Index[0]].id.two = null;
       socket.leave(roominfo[Index[0]].room);
       rooms[Index[0]] -= 1;
-      socket.emit('init', rooms);
+      io.emit('init', rooms);
     }
     console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
         rooms[cIndex] += 1;            //                  방 입장 현황 업데이트
         console.log(`해당 방의 현황 : ${Object.values(roominfo[cIndex].id)}`);
         console.log(`전체 인원 배열 : ${rooms}`);
-        socket.emit('init', rooms);
+        io.emit('init', rooms);
       }
     }
   })
