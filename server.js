@@ -99,7 +99,7 @@ io.on('connection', (socket) => {
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
         if (Index[1]) {
-        console.log('---------------try문----------------');
+          console.log('---------------try문----------------');
           //roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           console.log(roominfo[Index[0]].room);
@@ -140,6 +140,6 @@ io.on('connection', (socket) => {
   //그림판 삭제 메시지
   socket.on('emitClear', () => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw');
   })
 })
