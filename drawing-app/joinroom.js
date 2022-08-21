@@ -32,13 +32,18 @@ socket.on('init', (data)=>{
 
 // 방 입장 버튼 클릭시 방 입장
 function joinroom(cIndex){
-    ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
-        
-    socket.emit('joinroom', 
+    if(privroomnum != cIndex)
     {
-        id : myId,
-        cIndex : cIndex
-    })
+        privroomnum = cIndex;
+        ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
+            
+        socket.emit('joinroom', 
+        {
+            id : myId,
+            cIndex : cIndex
+        })
+    }
+    else{}
 }
 
 socket.on('joinfail',()=>{

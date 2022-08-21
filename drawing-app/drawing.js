@@ -13,7 +13,7 @@ let color = 'black';
 let x = undefined;
 let y = undefined;
 
-let send_x1,send_y1,send_x2,send_y2,send_size = undefined;
+let send_x1,send_y1,send_x2,send_y2,send_size,send_color = undefined;
 // drawing 시작
 canvas.addEventListener('mousedown', (e) => {
     isPressed = true;
@@ -42,7 +42,7 @@ canvas.addEventListener('mousemove', (e) => {
         x= x2;
         y= y2;
         // 현재 속한 방의 캔버스에 x,y,x2,y2 전달
-        socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size})
+        socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size, color : color})
     }
 });
 
@@ -54,28 +54,31 @@ socket.on('onDraw', (data)=>{
   send_x2 = data.x2;
   send_y2 = data.y2;
   send_size = data.size;;
+  send_color = data.color;
   console.log(send_x1,send_y1,send_x2,send_y2,send_size);
-  drawCircle(send_x2, send_y2, send_size);
-  drawline(send_x1,send_y1,send_x2,send_y2,send_size);
+  drawCircle(send_x2, send_y2, send_size, send_color);
+  drawline(send_x1,send_y1,send_x2,send_y2,send_size, send_color);
 })
 
 // 원 그리기
-function drawCircle(x,y,you_size) {
+function drawCircle(x,y,you_size, you_color) {
   if(you_size == undefined) you_size = size;
+  if(you_color == undefined) you_color = color;
     ctx.beginPath();
     ctx.arc(x,y,you_size, 0 , Math.PI * 2);
-    ctx.fillStyle = color;
+    ctx.fillStyle = you_color;
     ctx.fill();
     console.log(x,y);
 }
 
 // 선 그리기
-function drawline(x1, y1, x2, y2, you_size){
+function drawline(x1, y1, x2, y2, you_size, you_color){
   if(you_size == undefined) you_size = size;
+  if(you_color == undefined) you_color = color;
     ctx.beginPath();
     ctx.moveTo(x1,y1);
     ctx.lineTo(x2,y2);
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = you_color;
     ctx.lineWidth = you_size * 2;
     ctx.stroke();
     console.log(x1,y1,x2,y2,you_size);
