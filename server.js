@@ -43,6 +43,12 @@ for (let i = 0; i < 11; i++) {
   }
 }
 
+
+let arrObj = new Array(); 
+for (let index = 0; index < 6; index++) {
+  let tmpObj = {id: `test ${index}`, nick : `testnick ${index}`};
+  arrObj[index] = tmpObj;
+}
 /* 유저 접속 현황 체크 변수 */
 let rooms = [];
 for (let i = 0; i < 11; i++) {
@@ -108,5 +114,5 @@ io.on('connection', (socket) => {
     }
   })
 
-
+  socket.emit('test', arrObj);
 })

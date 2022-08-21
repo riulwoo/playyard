@@ -4,6 +4,7 @@ const decreaseBtn = document.getElementById('decrease');
 const sizeEl = document.getElementById('size');
 const colorEl = document.getElementById('color');
 const clearEl = document.getElementById('clear');
+const eraserEl = document.getElementById('eraser');
 const ctx = canvas.getContext('2d');
 
 let size = 10;

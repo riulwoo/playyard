@@ -10,6 +10,10 @@ socket.on('userid', (data)=> {
     myId = data;
 })
 
+socket.on('test',(data)=>{
+    console.log(data);
+})
+
 // 클라이언트 처음 접속 시 서버의 현재 인원 초기화
 socket.on('init', (data)=>{
     btn = document.querySelectorAll('#b');
@@ -24,7 +28,6 @@ socket.on('init', (data)=>{
         } 
         else item.style.visibility = "visible";
     }
-
 })
 
 // 방 입장 버튼 클릭시 방 입장
