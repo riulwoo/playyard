@@ -101,6 +101,7 @@ io.on('connection', (socket) => {
         if (Index[1]) {
           //roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
+          console.log(roominfo[Index[0]].room);
           rooms[Index[0]] -= 1;
           console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
           console.log('방옮김');
