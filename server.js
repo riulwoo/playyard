@@ -54,6 +54,7 @@ io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
 
   function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
+    console.log('---------------info내부----------------');
     // const roomIndex = roominfo.findIndex(id => {
     //   if (id[0] == socket.id || id[1] == socket.id) return id;
     // });
@@ -97,8 +98,8 @@ io.on('connection', (socket) => {
     else { //1-2. 덜찼다면 덜찬 인덱스 확인
       try {
         const Index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        console.log(`유저의 방 배열2 : ${Index[0]}  /  유저의 자리 배열2 : ${Index[1]}`);
         if (Index[1]) {
+        console.log('---------------try문----------------');
           //roominfo[Index[0]].id[Index[1]] = null;
           socket.leave(roominfo[Index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           console.log(roominfo[Index[0]].room);
@@ -107,8 +108,10 @@ io.on('connection', (socket) => {
           console.log('방옮김');
         }
       } catch (e) {
+        console.log('---------------catch문----------------');
         console.log(e);
       } finally {
+        console.log('---------------finally로그----------------');
         socket.join(roominfo[cIndex].room);
         console.log(`들어갈 방 Index : ${cIndex}`);
         if (one == null) roominfo[cIndex].id.one = id;
