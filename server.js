@@ -123,18 +123,18 @@ io.on('connection', (socket) => {
   /*채팅 메시지 통신*/
   socket.on('message', (message) => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('update', message);
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('update', message);
   })
 
   /*실시간 그림 통신*/
   socket.on('emitDraw', (data) => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 
   /*그림 삭제 메시지*/
   socket.on('emitClear', () => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onClear');
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('onClear');
   })
 })

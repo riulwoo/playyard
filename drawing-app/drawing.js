@@ -13,6 +13,7 @@ let color = 'black';
 let x = undefined;
 let y = undefined;
 
+let send_x1,send_y1,send_x2,send_y2,send_size = undefined;
 // drawing 시작
 canvas.addEventListener('mousedown', (e) => {
     isPressed = true;
@@ -40,30 +41,35 @@ canvas.addEventListener('mousemove', (e) => {
         drawline(x,y, x2, y2);
         x= x2;
         y= y2;
+        // 현재 속한 방의 캔버스에 x,y,x2,y2 전달
         socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size})
     }
 });
 
-// 현재 속한 방의 캔버스에 x,y,x2,y2 전달
-// 속한 방의 캔버스에서 x,y,x2,y2 받아 drawCircle과 drawline 실행
 
+// 속한 방의 캔버스에서 x,y,x2,y2 받아 drawCircle과 drawline 실행
 socket.on('onDraw', (data)=>{
-  const {_x,_y,_x2,_y2,_size} = data;
-  let you_size = _size;
-  drawCircle(_x2, _y2, you_size);
-  drawline(_x,_y,_x2,_y2,you_size);
-  _x = _x2;
-  _y = _y2;
+  send_x1 = data.x;
+  send_y1 = data.y;
+  send_x2 = data.x2;
+  send_y2 = data.y2;
+  send_size = data.size;;
+  console.log(send_x1,send_y1,send_x2,send_y2,send_size);
+  drawCircle(send_x2, send_y2, send_size);
+  drawline(send_x1,send_y1,send_x2,send_y2,send_size);
 })
 
+// 원 그리기
 function drawCircle(x,y,you_size) {
   if(you_size == undefined) you_size = size;
     ctx.beginPath();
     ctx.arc(x,y,you_size, 0 , Math.PI * 2);
     ctx.fillStyle = color;
     ctx.fill();
+    console.log(x,y);
 }
 
+// 선 그리기
 function drawline(x1, y1, x2, y2, you_size){
   if(you_size == undefined) you_size = size;
     ctx.beginPath();
@@ -72,6 +78,7 @@ function drawline(x1, y1, x2, y2, you_size){
     ctx.strokeStyle = color;
     ctx.lineWidth = you_size * 2;
     ctx.stroke();
+    console.log(x1,y1,x2,y2,you_size);
 }
 
 // brush 크기 조절
@@ -83,6 +90,7 @@ increaseBtn.addEventListener('click', () => {
     }
     updateSizeOnScreen();
 })
+
 decreaseBtn.addEventListener('click', () => {
     size -= 5;
     if(size < 5)
@@ -107,11 +115,3 @@ clearEl.addEventListener('click', () => {
 })
 
 socket.on('onClear', ()=>ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight))
-// function draw(){
-//     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-//     drawCircle(x,y);
-
-//     requestAnimationFrame(draw);
-// }
-
-// draw();
