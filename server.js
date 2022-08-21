@@ -1,5 +1,4 @@
 // server.js
-
 /* 설치한 express 모듈 불러오기 */
 const express = require('express')
 /* 설치한 socket.io 모듈 불러오기 */
@@ -8,8 +7,6 @@ const socket = require('socket.io')
 const http = require('http')
 /* Node.js 기본 내장 모듈 불러오기 */
 const fs = require('fs')
-const { SocketAddress } = require('net')
-const { Socket } = require('dgram')
 /* express 객체 생성 */
 const app = express()
 /* express http 서버 생성 */
@@ -17,6 +14,7 @@ const server = http.createServer(app)
 /* 생성된 서버를 socket.io에 바인딩 */
 const io = socket(server)
 app.use(express.static('drawing-app'))
+
 /* 서버 켜짐 */
 server.listen(process.env.PORT || 7070, () => {
   console.log("서버가 대기중입니다.");
@@ -34,85 +32,109 @@ app.get('/', function(req, res) {
   })
 })
 
-/* 유저 접속 정보 저장 변수 선언 */
-let roominfo = [];
-for (let i = 0; i < 11; i++) {
+let roominfo = [];             // 유저 정보 저장 배열
+let rooms = [];                // 방에 입장한 유저 현황 확인 배열
+for (let i = 0; i < 11; i++) { // 변수 초기화
+  rooms[i] = 0;                
   roominfo[i] = {
-    room: null,
-    id: [null, null]
+    room: `room_${i}`,         // 해당 방 식별 코드 변수
+    id: {                      // 방에 있는 유저 식별 객체
+      one: null,
+      two: null
+    }
   }
-}
-
-
-let arrObj = new Array(); 
-for (let index = 0; index < 6; index++) {
-  let tmpObj = {id: `test ${index}`, nick : `testnick ${index}`};
-  arrObj[index] = tmpObj;
-}
-/* 유저 접속 현황 체크 변수 */
-let rooms = [];
-for (let i = 0; i < 11; i++) {
-  rooms[i] = 0;
 }
 
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
+  
+  socket.emit('userid', socket.id);
+  io.emit('init', rooms);
 
-  function info() { //1. 룸인포 인덱스랑 유저 아이디 인덱스를 가져와야한다
-    const roomIndex = roominfo.findIndex(i => i.id == socket.id);
-    const idIndex = roominfo.indexOf(socket.id, (e, i) => {
-      return e.id;
-    });
-    console.log(roomIndex);
-    console.log(idIndex);
-    return [roomIndex, idIndex];
+  /*유저 정보 변수에서 방 입장 상태 확인 시 index 반환 함수*/
+  function info() {
+    //console.log('---------------info내부----------------');
+    let idCheck;
+    let roomIndex = roominfo.findIndex((room, i) => {
+      const { one, two } = room.id;
+      //console.log(`one : ${one} / two : ${two}`);
+      if (one === socket.id || two === socket.id) {
+        idCheck = true;
+        return room;
+      } else idCheck = false;
+    })
+    //console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idCheck}`);
+    return [roomIndex, idCheck];
   }
 
-  //사이트 접속 해제
-  socket.on('disconnect', (reason) => { // 1.roominfo 배열 index 2.roominfo 안에 id 객체에 비교 3. 비교 후 해당 객체의 index와 roominfo의 
-    const index = info();
-    if (index[1] !== -1)
-      roominfo[index[0]].id[index[1]] = null;
-    console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
+  /*사이트 접속 해제*/
+  socket.on('disconnect', (reason) => {
+    const Index = info();
+    if (Index[1]) {
+      const { one } = roominfo[Index[0]].id;
+      if (one === socket.id) roominfo[Index[0]].id.one = null;
+      else roominfo[Index[0]].id.two = null;
+      socket.leave(roominfo[Index[0]].room);
+      rooms[Index[0]] -= 1;
+      io.emit('init', rooms);
+    }
+    //console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
-
-  socket.emit('userid', socket.id)
-
-  socket.emit('init', rooms)
-
-  //방입장 메시지
+  
+  /*방 입장*/
   socket.on('joinroom', (data) => {
-    const { id, cIndex, pIndex } = data;
-    const full = Object.values(roominfo[cIndex].id).filter((user, index) => { if (user == null) return index; }); //1. 해당 방 인원 확인
-    const idIndex = roominfo.findIndex(i => i.id == null);
-    if (full.length == 2) socket.emit('fail'); //1-1. 꽉찼다면 실패 메시지
-    else { //1-2. 덜찼다면 덜찬 인덱스 확인
+    const { id, cIndex } = data;
+    const { one: cId } = roominfo[cIndex].id;
+    const full = 0;
+    if (full === 2) socket.emit('fail'); 
+    else {
       try {
-        const index = info();    //2. 방을 옮기는 것인지 처음 방에 입장하는 것인지 확인
-        roominfo[index[0]].id[index[1]] = null;
-        socket.leave(roominfo[index[0]].room); //    1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
-        rooms[pIndex] = rooms[pIndex] - 1;
-        console.log('방옮김');
-        console.log(rooms);
-      } catch (e) { console.log(e) } finally {
+        const Index = info();
+        if (Index[1]) {
+          const { one: pId } = roominfo[Index[0]].id;
+          //console.log('---------------try문----------------');
+          //console.log('pId 값 : ' + pId);
+          socket.leave(roominfo[Index[0]].room);
+          if (pId === id) roominfo[Index[0]].id.one = null;
+          else roominfo[Index[0]].id.two = null;
+          //console.log(roominfo[Index[0]].room); 
+          rooms[Index[0]] -= 1;
+          //console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
+        }
+      } catch (e) {
+        //console.log('---------------catch문----------------');
+        //console.log(e);
+      } finally {
+        //console.log('---------------finally로그----------------');
+        //console.log('cId 값 : ' + cId);
         socket.join(roominfo[cIndex].room);
-        roominfo[cIndex].id[idIndex] = id;  // 
-        rooms[cIndex] = rooms[cIndex] + 1;
-        console.log(roominfo[cIndex]);
-        console.log(rooms);
+        //console.log(`들어갈 방 Index : ${cIndex}`);
+        if (cId === null) roominfo[cIndex].id.one = id;
+        else roominfo[cIndex].id.two = id;
+        rooms[cIndex] += 1;
+        //console.log(`해당 방의 현황 : ${Object.values(roominfo[cIndex].id)}`);
+        //console.log(`전체 인원 배열 : ${rooms}`);
         io.emit('init', rooms);
-        console.log('방처음입장');
       }
     }
   })
-  //채팅 메시지 받아서 해당 방에 전송
+
+  /*채팅 메시지 통신*/
   socket.on('message', (message) => {
-    for (let i = 0; i < Object.keys(roominfo).length; i++) {
-      if (roominfo[i].id == socket.id)
-        io.sockets.to(roominfo[i].room).emit('update', message);
-    }
+    const Index = info();
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('update', message);
   })
 
-  socket.emit('test', arrObj);
+  /*실시간 그림 통신*/
+  socket.on('emitDraw', (data) => {
+    const Index = info();
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+  })
+
+  /*그림 삭제 메시지*/
+  socket.on('emitClear', () => {
+    const Index = info();
+    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onClear');
+  })
 })
