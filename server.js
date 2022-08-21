@@ -95,6 +95,7 @@ io.on('connection', (socket) => {
         if (Index[1]) { // id값이 있을 경우 방을 옮기는 코드 실행
           const { one: pId } = roominfo[Index[0]];
           console.log('---------------try문----------------');
+          console.log('pId 값 : ' + pId);
           socket.leave(roominfo[Index[0]].room); //  1. 유저가 있었던 방의 인덱스에서 일치하는 아이디를 삭제, leave
           if (pId === id) roominfo[Index[0]].id.one = null;
           else roominfo[Index[0]].id.two = null;
@@ -107,6 +108,7 @@ io.on('connection', (socket) => {
         console.log(e);
       } finally {                              //          1-4. 들어갈 방에 데이터를 넣는 코드 실행
         console.log('---------------finally로그----------------');
+        console.log('cId 값 : ' + cId);
         socket.join(roominfo[cIndex].room);    //          
         console.log(`들어갈 방 Index : ${cIndex}`);
         if (cId === null) roominfo[cIndex].id.one = id;
