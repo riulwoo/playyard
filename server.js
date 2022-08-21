@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
           if (pId === id) roominfo[Index[0]].id.one = null;
           else roominfo[Index[0]].id.two = null;
           console.log(roominfo[Index[0]].room); 
-          rooms[Index[0]] -= 1;                  //  2. 해당 방의 유저 접속 현황 업데이트
+          rooms[Index[0]] -= 1;                  //  2. 방의 유저 접속 현황 업데이트
           console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
         }
       } catch (e) {
@@ -109,11 +109,11 @@ io.on('connection', (socket) => {
       } finally {                              //          1-4. 들어갈 방에 데이터를 넣는 코드 실행
         console.log('---------------finally로그----------------');
         console.log('cId 값 : ' + cId);
-        socket.join(roominfo[cIndex].room);    //          
+        socket.join(roominfo[cIndex].room);    //          조인
         console.log(`들어갈 방 Index : ${cIndex}`);
-        if (cId === null) roominfo[cIndex].id.one = id;
+        if (cId === null) roominfo[cIndex].id.one = id;//  데이터 넣기
         else roominfo[cIndex].id.two = id;
-        rooms[cIndex] += 1;
+        rooms[cIndex] += 1;            //                  방 입장 현황 업데이트
         console.log(`해당 방의 현황 : ${Object.values(roominfo[cIndex].id)}`);
         console.log(`전체 인원 배열 : ${rooms}`);
         socket.emit('init', rooms);
