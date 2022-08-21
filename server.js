@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
       if (one === socket.id || two === socket.id) {
         idCheck = true;
         return room;
-      } else idCheck = -1;
+      } else idCheck = false;
     })
     console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idCheck}`);
     return [roomIndex, idCheck];
