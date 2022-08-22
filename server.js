@@ -54,17 +54,14 @@ io.on('connection', (socket) => {
 
   /*유저 정보 변수에서 방 입장 상태 확인 시 index 반환 함수*/
   function info() {
-    //console.log('---------------info내부----------------');
     let idCheck;
     let roomIndex = roominfo.findIndex((room, i) => {
       const { one, two } = room.id;
-      //console.log(`one : ${one} / two : ${two}`);
       if (one === socket.id || two === socket.id) {
         idCheck = true;
         return room;
       } else idCheck = false;
     })
-    //console.log(`유저의 방 배열 : ${roomIndex}  /  유저의 자리 배열 : ${idCheck}`);
     return [roomIndex, idCheck];
   }
 
@@ -79,7 +76,6 @@ io.on('connection', (socket) => {
       rooms[Index[0]] -= 1;
       io.emit('init', rooms);
     }
-    //console.log(`${socket.id}님이 ${reason}의 이유로 퇴장하셨습니다.`)
   })
   
   /*방 입장*/
@@ -93,28 +89,17 @@ io.on('connection', (socket) => {
         const Index = info();
         if (Index[1]) {
           const { one: pId } = roominfo[Index[0]].id;
-          //console.log('---------------try문----------------');
-          //console.log('pId 값 : ' + pId);
           socket.leave(roominfo[Index[0]].room);
           if (pId === id) roominfo[Index[0]].id.one = null;
           else roominfo[Index[0]].id.two = null;
-          //console.log(roominfo[Index[0]].room); 
           rooms[Index[0]] -= 1;
-          //console.log(`방 옮길 경우 roomIndex : ${Index[0]} / idIndex : ${Index[1]}`);
         }
       } catch (e) {
-        //console.log('---------------catch문----------------');
-        //console.log(e);
       } finally {
-        //console.log('---------------finally로그----------------');
-        //console.log('cId 값 : ' + cId);
         socket.join(roominfo[cIndex].room);
-        //console.log(`들어갈 방 Index : ${cIndex}`);
         if (cId === null) roominfo[cIndex].id.one = id;
         else roominfo[cIndex].id.two = id;
         rooms[cIndex] += 1;
-        //console.log(`해당 방의 현황 : ${Object.values(roominfo[cIndex].id)}`);
-        //console.log(`전체 인원 배열 : ${rooms}`);
         io.emit('init', rooms);
       }
     }
