@@ -8,7 +8,7 @@ socket.on('update', function(data){
     var message = document.createElement('div')
     var node = document.createTextNode(`상대 : ${data.message}`)
     var className = ''
-
+  
     // 타입에 따라 적용할 클래스를 다르게 지정
     switch(data.type){
         case 'message':
