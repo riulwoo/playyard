@@ -1,5 +1,4 @@
 // server.js
-
 /* 설치한 express 모듈 불러오기 */
 const express = require('express')
 /* 설치한 socket.io 모듈 불러오기 */
@@ -8,8 +7,6 @@ const socket = require('socket.io')
 const http = require('http')
 /* Node.js 기본 내장 모듈 불러오기 */
 const fs = require('fs')
-const { SocketAddress } = require('net')
-const { Socket } = require('dgram')
 /* express 객체 생성 */
 const app = express()
 /* express http 서버 생성 */
@@ -17,6 +14,7 @@ const server = http.createServer(app)
 /* 생성된 서버를 socket.io에 바인딩 */
 const io = socket(server)
 app.use(express.static('drawing-app'))
+
 /* 서버 켜짐 */
 server.listen(process.env.PORT || 7070, () => {
   console.log("서버가 대기중입니다.");
@@ -46,6 +44,7 @@ for (let i = 0; i < 11; i++) { // 변수 초기화
     }
   }
 }
+
 /* 사이트 접속 시 실행 메소드 */
 io.on('connection', (socket) => {
   console.log(`${socket.id}님이 입장하셨습니다.`);
@@ -124,18 +123,18 @@ io.on('connection', (socket) => {
   /*채팅 메시지 통신*/
   socket.on('message', (message) => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('update', message);
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('update', message);
   })
 
   /*실시간 그림 통신*/
   socket.on('emitDraw', (data) => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onDraw', data);
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('onDraw', data);
   })
 
   /*그림 삭제 메시지*/
   socket.on('emitClear', () => {
     const Index = info();
-    if (Index[1]) io.sockets.to(roominfo[Index[0]].room).emit('onClear');
+    if (Index[1]) socket.to(roominfo[Index[0]].room).emit('onClear');
   })
 })

@@ -4,6 +4,7 @@ const decreaseBtn = document.getElementById('decrease');
 const sizeEl = document.getElementById('size');
 const colorEl = document.getElementById('color');
 const clearEl = document.getElementById('clear');
+const eraserEl = document.getElementById('eraser');
 const ctx = canvas.getContext('2d');
 
 let size = 10;
@@ -12,6 +13,7 @@ let color = 'black';
 let x = undefined;
 let y = undefined;
 
+let send_x1,send_y1,send_x2,send_y2,send_size,send_color = undefined;
 // drawing 시작
 canvas.addEventListener('mousedown', (e) => {
     isPressed = true;
@@ -39,38 +41,47 @@ canvas.addEventListener('mousemove', (e) => {
         drawline(x,y, x2, y2);
         x= x2;
         y= y2;
-        socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size})
+        // 현재 속한 방의 캔버스에 x,y,x2,y2 전달
+        socket.emit('emitDraw', {x : x, y : y, x2 : x2, y2 : y2, size : size, color : color})
     }
 });
 
-// 현재 속한 방의 캔버스에 x,y,x2,y2 전달
-// 속한 방의 캔버스에서 x,y,x2,y2 받아 drawCircle과 drawline 실행
 
+// 속한 방의 캔버스에서 x,y,x2,y2 받아 drawCircle과 drawline 실행
 socket.on('onDraw', (data)=>{
-  const {_x,_y,_x2,_y2,_size} = data;
-  let you_size = _size;
-  drawCircle(_x2, _y2, you_size);
-  drawline(_x,_y,_x2,_y2,you_size);
-  _x = _x2;
-  _y = _y2;
+  send_x1 = data.x;
+  send_y1 = data.y;
+  send_x2 = data.x2;
+  send_y2 = data.y2;
+  send_size = data.size;;
+  send_color = data.color;
+  console.log(send_x1,send_y1,send_x2,send_y2,send_size);
+  drawCircle(send_x2, send_y2, send_size, send_color);
+  drawline(send_x1,send_y1,send_x2,send_y2,send_size, send_color);
 })
 
-function drawCircle(x,y,you_size) {
+// 원 그리기
+function drawCircle(x,y,you_size, you_color) {
   if(you_size == undefined) you_size = size;
+  if(you_color == undefined) you_color = color;
     ctx.beginPath();
     ctx.arc(x,y,you_size, 0 , Math.PI * 2);
-    ctx.fillStyle = color;
+    ctx.fillStyle = you_color;
     ctx.fill();
+    console.log(x,y);
 }
 
-function drawline(x1, y1, x2, y2, you_size){
+// 선 그리기
+function drawline(x1, y1, x2, y2, you_size, you_color){
   if(you_size == undefined) you_size = size;
+  if(you_color == undefined) you_color = color;
     ctx.beginPath();
     ctx.moveTo(x1,y1);
     ctx.lineTo(x2,y2);
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = you_color;
     ctx.lineWidth = you_size * 2;
     ctx.stroke();
+    console.log(x1,y1,x2,y2,you_size);
 }
 
 // brush 크기 조절
@@ -82,6 +93,7 @@ increaseBtn.addEventListener('click', () => {
     }
     updateSizeOnScreen();
 })
+
 decreaseBtn.addEventListener('click', () => {
     size -= 5;
     if(size < 5)
@@ -106,11 +118,3 @@ clearEl.addEventListener('click', () => {
 })
 
 socket.on('onClear', ()=>ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight))
-// function draw(){
-//     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-//     drawCircle(x,y);
-
-//     requestAnimationFrame(draw);
-// }
-
-// draw();

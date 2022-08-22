@@ -10,6 +10,10 @@ socket.on('userid', (data)=> {
     myId = data;
 })
 
+socket.on('test',(data)=>{
+    console.log(data);
+})
+
 // 클라이언트 처음 접속 시 서버의 현재 인원 초기화
 socket.on('init', (data)=>{
     btn = document.querySelectorAll('#b');
@@ -24,18 +28,22 @@ socket.on('init', (data)=>{
         } 
         else item.style.visibility = "visible";
     }
-
 })
 
 // 방 입장 버튼 클릭시 방 입장
 function joinroom(cIndex){
-    ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
-        
-    socket.emit('joinroom', 
+    if(privroomnum != cIndex)
     {
-        id : myId,
-        cIndex : cIndex
-    })
+        privroomnum = cIndex;
+        ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight)
+            
+        socket.emit('joinroom', 
+        {
+            id : myId,
+            cIndex : cIndex
+        })
+    }
+    else{}
 }
 
 socket.on('joinfail',()=>{
