@@ -34,8 +34,10 @@ app.get('/', function(req, res) {
 
 let roominfo = [];             // 유저 정보 저장 배열
 let rooms = [];                // 방에 입장한 유저 현황 확인 배열
+let nick = [];                 // 유저가 설정한 닉네임 저장 배열 ( 초기값은 해당 유저의 id )
 for (let i = 0; i < 11; i++) { // 변수 초기화
-  rooms[i] = 0;                
+  rooms[i] = 0;   
+  nick[i] = ['' , '' , '' , '' , '' , ''];
   roominfo[i] = {
     room: `room_${i}`,         // 해당 방 식별 코드 변수
     id: {                      // 방에 있는 유저 식별 객체
@@ -80,9 +82,10 @@ io.on('connection', (socket) => {
   
   /*방 입장*/
   socket.on('joinroom', (data) => {
-    const { id, cIndex } = data;
+    const { id, cIndex, nickName } = data;
     const { one: cId } = roominfo[cIndex].id;
     const full = 0;
+    const nickIndex = nick.
     if (full === 2) socket.emit('fail'); 
     else {
       try {
@@ -96,11 +99,17 @@ io.on('connection', (socket) => {
         }
       } catch (e) {
       } finally {
+        if(nickName == '') {
+          
+        }
         socket.join(roominfo[cIndex].room);
         if (cId === null) roominfo[cIndex].id.one = id;
         else roominfo[cIndex].id.two = id;
         rooms[cIndex] += 1;
-        io.emit('init', rooms);
+        io.emit('init', {
+          nick: nick,
+          rooms: rooms
+        });
       }
     }
   })

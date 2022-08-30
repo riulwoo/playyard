@@ -23,7 +23,7 @@ socket.on('init', (data)=>{
     {
         room[i].innerText = `( ${data[i]} / 2 접속중 )`;
         const item = btn.item(i);
-        if(data[i] >= 2){
+        if(data[i] >= 6){
             item.style.visibility = "hidden";
         } 
         else item.style.visibility = "visible";
