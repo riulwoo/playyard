@@ -12,7 +12,7 @@
 # 프로젝트 정보   
 ## 프로젝트 주제 및 기능
 프로젝트 주제 : Drawing Chat - (채팅과 그림을 그리며 소통할 수 있는 사이트)   
-
+체험해보기 : http://play-yard.ml/  
 ## SKILL
 HTML CSS Javascript NodeJs SocketIO AWS EC2 AWS Route 53   
 
