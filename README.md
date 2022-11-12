@@ -7,7 +7,7 @@
   
 ## 역할   
   - [이근우](https://github.com/riulwoo) : 프로젝트 기획, 프론트엔드(UI/통신)
-  - [강민성](https://github.com/riulwoo) : 백엔드(API/통신)      
+  - [강민성](https://github.com/minseong00) : 백엔드(API/통신)      
 * * *
 # 프로젝트 정보   
 ## 프로젝트 주제 및 기능
